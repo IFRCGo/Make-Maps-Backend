@@ -1,0 +1,29 @@
+{
+  "name": "IFRC_GO_Make_Maps_Backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/piraveenankirupakaran/IFRC-GO-Make-Maps-Backend.git"
+  },
+  "author": "Piraveenan Kirupakaran",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/piraveenankirupakaran/IFRC-GO-Make-Maps-Backend/issues"
+  },
+  "homepage": "https://github.com/piraveenankirupakaran/IFRC-GO-Make-Maps-Backend#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-async-handler": "^1.2.0",
+    "mongoose": "^6.6.2",
+    "node": "^18.9.1",
+    "nodemon": "^2.0.20",
+    "tar": "^6.1.11"
+  }
+}
