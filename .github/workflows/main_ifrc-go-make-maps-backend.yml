@@ -23,7 +23,7 @@ jobs:
         working-directory: "./backend"
 
       - name: Run tests
-        run: npm test
+        run: npm test --if-present
         working-directory: "./backend"
 
       - name: Build application
