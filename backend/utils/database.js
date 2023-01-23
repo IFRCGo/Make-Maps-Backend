@@ -1,12 +1,14 @@
-// this file will be incharge of connecting to the database
-// we connect to the db like this
+//Importing So Require Works in Node 14+
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+
 const mongoose = require("mongoose");
 
-const connectDB = async () => {
+export async function connectDB() {
   try {
     await mongoose.set("strictQuery", false);
 
-    const conn = await mongoose.connect(process.env.MONGO_URL, {
+    const conn = await mongoose.connect(process.env.MONGGO_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
@@ -16,6 +18,6 @@ const connectDB = async () => {
     console.log(`Error: ${error.message}`);
     process.exit();
   }
-};
+}
 
-module.exports = connectDB;
+
