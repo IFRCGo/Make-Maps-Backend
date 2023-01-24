@@ -1,18 +1,28 @@
-import express from 'express';
+import express from "express";
 
 //Importing So Require Works in Node 14+
-import { createRequire } from 'module';
+import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 
 //Env Variables Usage
-const  dotenv = require('dotenv');
+const dotenv = require("dotenv");
 dotenv.config();
 
-//Database connection
-// import { connectDB } from "./utils/database.js";
-// connectDB().then(r => console.log(r))
+import { graphqlSchema } from "./resolver/resolverIndex.js";
+
+import { ApolloServer } from "apollo-server-express";
+import {
+  ApolloServerPluginDrainHttpServer,
+  ApolloServerPluginLandingPageLocalDefault,
+} from "apollo-server-core";
+import http from "http";
+import { connectDB } from "./utils/database.js";
+
 //cors
-var cors = require('cors');
+var cors = require("cors");
+
+//Database connection
+connectDB();
 
 //Express
 const app = express();
@@ -25,33 +35,32 @@ app.use(
     credentials: true,
   })
 );
-
-import { graphqlSchema } from './resolver/resolverIndex.js'
-
-import { ApolloServer } from 'apollo-server-express';
-import { ApolloServerPluginDrainHttpServer, ApolloServerPluginLandingPageLocalDefault } from 'apollo-server-core';
-import http from 'http';
+app.get("/", (req, res) => {
+  res.send("IFRC GO Make Maps Backend Running!");
+});
+const PORT = process.env.PORT || 9091;
 
 async function startApolloServer(typeDefs, resolvers) {
-    const app = express();
+  const httpServer = http.createServer(app);
 
-    const httpServer = http.createServer(app);
+  const server = new ApolloServer({
+    schema: graphqlSchema,
+    csrfPrevention: true,
+    cache: "bounded",
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+  });
 
-    const server = new ApolloServer({
-        schema: graphqlSchema,
-        csrfPrevention: true,
-        cache: 'bounded',
-        plugins: [ApolloServerPluginDrainHttpServer({ httpServer }), ApolloServerPluginLandingPageLocalDefault({ embed: true })],
-    });
+  await server.start();
+  server.applyMiddleware({
+    app,
+    path: "/graphql",
+  });
 
-    await server.start();
-    server.applyMiddleware({
-        app,
-        path: '/',
-    });
+  await new Promise((resolve) => httpServer.listen(PORT, resolve));
 
-    await new Promise((resolve) => httpServer.listen({ port: 4000 }, resolve));
-    console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`);
+  console.log(
+    `🚀 Graph Server ready at http://localhost:${PORT}${server.graphqlPath}`
+  );
 }
 
-startApolloServer()
+startApolloServer();
