@@ -1,14 +1,13 @@
 //Importing So Require Works in Node 14+
-import { createRequire } from 'module';
+import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 
 const mongoose = require("mongoose");
+mongoose.set("strictQuery", false);
 
 export async function connectDB() {
   try {
-    await mongoose.set("strictQuery", false);
-
-    const conn = await mongoose.connect(process.env.MONGGO_URL, {
+    const conn = await mongoose.connect(process.env.MONGO_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
@@ -19,5 +18,3 @@ export async function connectDB() {
     process.exit();
   }
 }
-
-
