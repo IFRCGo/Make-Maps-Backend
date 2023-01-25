@@ -1,5 +1,5 @@
 import { composeMongoose } from "graphql-compose-mongoose";
-import { User } from "../models/UserMongoose.js";
+import { Text } from "../models/TextMongoose.js";
 
 const customizationOptions = {}; // left it empty for simplicity, described below
-export const UserTC = composeMongoose(User, customizationOptions);
+export const TextTC = composeMongoose(Text, customizationOptions);
