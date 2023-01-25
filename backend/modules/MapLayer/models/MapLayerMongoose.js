@@ -18,6 +18,7 @@ const MapLayerSchema = mongoose.Schema(
     layerType: { type: String, required: true },
     layerConfig: { type: Object, required: true },
     date: { type: Date, default: Date.now },
+    //by different users, and has different text and data layer
   },
   {
     timestaps: true,

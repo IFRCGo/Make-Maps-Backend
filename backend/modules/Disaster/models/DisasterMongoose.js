@@ -29,6 +29,29 @@ const DisasterSchema = mongoose.Schema(
       ref: "User",
       required: true,
     },
+
+    pins: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Pin",
+      },
+    ],
+    texts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Text",
+      },
+    ],
+    mapLayers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "MapLayer",
+      },
+    ],
+    lastUpdated: { type: Date, default: Date.now },
+    lastSentEmail: { type: Date, default: Date.now },
+
+    subscriptions: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   },
   {
     timestaps: true,

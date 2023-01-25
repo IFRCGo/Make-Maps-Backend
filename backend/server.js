@@ -64,3 +64,42 @@ async function startApolloServer(typeDefs, resolvers) {
 }
 
 startApolloServer();
+
+//sending emails to subscribers
+
+const cron = require("node-cron");
+
+cron.schedule("0 */2 * * *", () => {
+  Disaster.find({})
+    .populate("pins texts mapLayers")
+    .exec((err, disasters) => {
+      if (err) {
+        console.log(err);
+      } else {
+        disasters.forEach((disaster) => {
+          if (disaster.subscriber.length !== 0) {
+            let isUpdate = false;
+            disaster.pins.forEach((pin) => {
+              if (pin.date > disaster.lastSentEmail) {
+                isUpdate = true;
+              }
+            });
+            disaster.texts.forEach((text) => {
+              if (text.date > disaster.lastSentEmail) {
+                isUpdate = true;
+              }
+            });
+            disaster.mapLayers.forEach((mapLayer) => {
+              if (mapLayer.date > disaster.lastSentEmail) {
+                isUpdate = true;
+              }
+            });
+            if (isUpdate) {
+              // send email to subscribers
+              // update lastSentEmail to current time
+            }
+          }
+        });
+      }
+    });
+});
