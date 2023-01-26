@@ -1,5 +1,8 @@
 import { PinTC } from "../schema/PinSchema.js";
-
+import { Disaster } from "./../../Disaster/models/DisasterMongoose.js";
+import { Pin } from "../models/PinMongoose.js";
+import mongoose from "mongoose";
+import { GraphQLObjectType } from "graphql";
 export const pinQuery = {
   pinById: PinTC.mongooseResolvers.findById(),
   pinByIds: PinTC.mongooseResolvers.findByIds(),
@@ -22,10 +25,32 @@ export const pinQuery = {
   pinPagination: PinTC.mongooseResolvers.pagination(),
 };
 
+const PinCustomPayload = new GraphQLObjectType({
+  name: "PinRemoveOneCustomPayload",
+  fields: {
+    record: { type: PinTC.getType() },
+  },
+});
+
 export const pinMutation = {
   pinCreateOne: PinTC.mongooseResolvers.createOne(),
   pinCreateMany: PinTC.mongooseResolvers.createMany(),
   pinUpdateById: PinTC.mongooseResolvers.updateById(),
-  pinRemoveById: PinTC.mongooseResolvers.removeById(),
   pinRemoveOne: PinTC.mongooseResolvers.removeOne(),
+  pinRemoveOneCustom: {
+    type: PinCustomPayload,
+    args: {
+      _id: "MongoID!",
+    },
+    resolve: async (_, args) => {
+      const removedPin = await Pin.findByIdAndRemove(args._id);
+      if (removedPin) {
+        await Disaster.findByIdAndUpdate(
+          { _id: removedPin.disaster },
+          { $pull: { pins: removedPin._id } }
+        );
+      }
+      return { record: removedPin };
+    },
+  },
 };

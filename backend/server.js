@@ -3,7 +3,7 @@ import express from "express";
 //Importing So Require Works in Node 14+
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
-
+var cron = require("node-cron");
 //Env Variables Usage
 const dotenv = require("dotenv");
 dotenv.config();
@@ -17,7 +17,7 @@ import {
 } from "apollo-server-core";
 import http from "http";
 import { connectDB } from "./utils/database.js";
-
+import { Disaster } from "./modules/Disaster/models/DisasterMongoose.js";
 //cors
 var cors = require("cors");
 
@@ -65,41 +65,47 @@ async function startApolloServer(typeDefs, resolvers) {
 
 startApolloServer();
 
-//sending emails to subscribers
+// //sending emails to subscribers
 
-const cron = require("node-cron");
+// //cron.schedule("0 */2 * * *", () => {
+// cron.schedule("*/10 * * * * *", function () {
+//   Disaster.find({})
+//     .populate("pins texts mapLayers")
+//     .exec((err, disasters) => {
+//       if (err) {
+//         console.log(err);
+//       } else {
+//         disasters.forEach((disaster) => {
+//           //if (disaster.subscriber.length !== 0) {
+//           let isUpdate = false;
+//           disaster.pins.forEach((pin) => {
+//             if (pin.date.getTime() > disaster.lastSentEmail.getTime()) {
+//               isUpdate = true;
+//             }
+//           });
+//           disaster.texts.forEach((text) => {
+//             if (text.date > disaster.lastSentEmail) {
+//               isUpdate = true;
+//             }
+//           });
+//           disaster.mapLayers.forEach((mapLayer) => {
+//             if (mapLayer.date > disaster.lastSentEmail) {
+//               isUpdate = true;
+//             }
+//           });
+//           if (isUpdate) {
+//             console.log("has been updated");
 
-cron.schedule("0 */2 * * *", () => {
-  Disaster.find({})
-    .populate("pins texts mapLayers")
-    .exec((err, disasters) => {
-      if (err) {
-        console.log(err);
-      } else {
-        disasters.forEach((disaster) => {
-          if (disaster.subscriber.length !== 0) {
-            let isUpdate = false;
-            disaster.pins.forEach((pin) => {
-              if (pin.date > disaster.lastSentEmail) {
-                isUpdate = true;
-              }
-            });
-            disaster.texts.forEach((text) => {
-              if (text.date > disaster.lastSentEmail) {
-                isUpdate = true;
-              }
-            });
-            disaster.mapLayers.forEach((mapLayer) => {
-              if (mapLayer.date > disaster.lastSentEmail) {
-                isUpdate = true;
-              }
-            });
-            if (isUpdate) {
-              // send email to subscribers
-              // update lastSentEmail to current time
-            }
-          }
-        });
-      }
-    });
-});
+//             Disaster.findOneAndUpdate(
+//               { _id: disaster._id },
+//               { lastSentEmail: Date.now() }
+//             );
+//             // send email to subscribers
+//             // update lastSentEmail to current time
+//           }
+
+//           //}
+//         });
+//       }
+//     });
+// });
