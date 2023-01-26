@@ -48,8 +48,8 @@ const DisasterSchema = mongoose.Schema(
         ref: "MapLayer",
       },
     ],
-    lastUpdated: { type: Date, default: Date.now },
-    lastSentEmail: { type: Date, default: Date.now },
+    lastUpdated: { type: Date, default: Date.now() },
+    lastSentEmail: { type: Date, default: Date.now() },
 
     subscriptions: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   },
