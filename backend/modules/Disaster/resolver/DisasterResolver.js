@@ -30,49 +30,4 @@ export const disasterMutation = {
   disasterUpdateById: DisasterTC.mongooseResolvers.updateById(),
   disasterRemoveById: DisasterTC.mongooseResolvers.removeById(),
   disasterRemoveOne: DisasterTC.mongooseResolvers.removeOne(),
-
-  //custom resolvers ->not working!
-  addPin: DisasterTC.addResolver({
-    name: "addPin",
-    type: DisasterTC,
-    args: {
-      disasterId: "ID!",
-      pinText: "String!",
-      date: "Date!",
-      pinCoordinates: "JSON!",
-      createdBy: "ID!",
-    },
-    resolve: async ({ args }) => {
-      // Create a new instance of the Pin model
-      const { disasterId, pinText, date, pinCoordinates, createdBy } = args;
-      userId = createdBy;
-      const newPin = new Pin({
-        disaster: disasterId,
-        pinText,
-        date,
-        pinCoordinates,
-        createdBy: userId,
-      });
-      // Save the new pin to the database
-      await newPin.save();
-      // push the new pin's id to the disaster's pins array
-      await Disaster.findByIdAndUpdate(disasterId, {
-        $push: { pins: newPin._id },
-        $set: { lastUpdated: new Date.now() },
-      });
-      // Return the saved pin
-
-      Disaster.findOne({ _id: disasterId })
-        .populate("pins")
-        .exec((err, disaster) => {
-          if (err) {
-            console.log(err);
-          } else {
-            console.log(disaster.pins);
-          }
-        });
-
-      return newPin;
-    },
-  }),
 };
