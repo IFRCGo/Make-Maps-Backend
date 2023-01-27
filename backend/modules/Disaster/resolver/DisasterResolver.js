@@ -1,6 +1,7 @@
 import { DisasterTC } from "../schema/DisasterSchema.js";
 import { Disaster } from "./../models/DisasterMongoose.js";
 import { Pin } from "./../../Pin/models/PinMongoose.js";
+import {pubsub} from "../../../server.js";
 
 export const disasterQuery = {
   disasterById: DisasterTC.mongooseResolvers.findById(),
@@ -31,3 +32,11 @@ export const disasterMutation = {
   disasterRemoveById: DisasterTC.mongooseResolvers.removeById(),
   disasterRemoveOne: DisasterTC.mongooseResolvers.removeOne(),
 };
+
+export const disasterSubscription = {
+  disasterSubscription: {
+    type: DisasterTC,
+    resolve: (payload) => { Disaster.findById(payload._id)},
+    subscribe: () => pubsub.asyncIterator(["DISASTER_UPDATED"]),
+  }
+}
