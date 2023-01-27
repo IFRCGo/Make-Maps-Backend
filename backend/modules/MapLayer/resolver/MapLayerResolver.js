@@ -30,23 +30,3 @@ export const mapLayerMutation = {
   mapLayerRemoveById: MapLayerTC.mongooseResolvers.removeById(),
   mapLayerRemoveOne: MapLayerTC.mongooseResolvers.removeOne(),
 };
-
-export const mapLayerSubscription = {
-  mapLayerSubscribe:  {
-    type: 'MapLayer',
-        resolve: (payload) => {
-      return payload.caseAdded;
-    },
-    subscribe: () => pubsub.asyncIterator(["MAP_UPDATED"]),
-}
-
-
-  // mapLayerSubscribe: MapLayerTC.addResolver({
-  //   name: 'mapLayerSubscribe',
-  //   type: 'MapLayer',
-  //   resolve: (payload ) => {
-  //     return payload;
-  //   },
-  //   subscribe: () => pubsub.asyncIterator(['MAP_UPDATED']),
-  // })
-}

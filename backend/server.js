@@ -10,7 +10,7 @@ dotenv.config();
 
 import { PubSub } from 'graphql-subscriptions';
 export const pubsub = new PubSub();
-pubsub.publish("MAP_UPDATED",{data: 42})
+pubsub.publish("DISASTER_UPDATED",{data: 42})
 
 import { WebSocketServer } from 'ws';
 import { useServer } from 'graphql-ws/lib/use/ws';
@@ -96,7 +96,7 @@ async function startApolloServer(typeDefs, resolvers) {
 let currentNumber = 0;
 function incrementNumber() {
   currentNumber++;
-  pubsub.publish('NUMBER_INCREMENTED', { numberIncremented: currentNumber });
+  pubsub.publish('DISASTER_UPDATED', { numberIncremented: currentNumber });
   setTimeout(incrementNumber, 1000);
 }
 
