@@ -1,4 +1,5 @@
 import { MapLayerTC } from "../schema/MapLayerSchema.js";
+import { pubsub } from '../../../server.js';
 
 export const mapLayerQuery = {
   mapLayerById: MapLayerTC.mongooseResolvers.findById(),
@@ -29,3 +30,23 @@ export const mapLayerMutation = {
   mapLayerRemoveById: MapLayerTC.mongooseResolvers.removeById(),
   mapLayerRemoveOne: MapLayerTC.mongooseResolvers.removeOne(),
 };
+
+export const mapLayerSubscription = {
+  mapLayerSubscribe:  {
+    type: 'MapLayer',
+        resolve: (payload) => {
+      return payload.caseAdded;
+    },
+    subscribe: () => pubsub.asyncIterator(["MAP_UPDATED"]),
+}
+
+
+  // mapLayerSubscribe: MapLayerTC.addResolver({
+  //   name: 'mapLayerSubscribe',
+  //   type: 'MapLayer',
+  //   resolve: (payload ) => {
+  //     return payload;
+  //   },
+  //   subscribe: () => pubsub.asyncIterator(['MAP_UPDATED']),
+  // })
+}

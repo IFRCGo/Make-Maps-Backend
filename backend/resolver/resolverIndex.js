@@ -16,10 +16,7 @@ import {
 
 import { pinQuery, pinMutation } from "../modules/Pin/resolver/PinResolver.js";
 
-import {
-  mapLayerQuery,
-  mapLayerMutation,
-} from "../modules/MapLayer/resolver/MapLayerResolver.js";
+import { mapLayerQuery, mapLayerMutation, mapLayerSubscription } from "../modules/MapLayer/resolver/MapLayerResolver.js";
 
 schemaComposer.Query.addFields({
   ...disasterQuery,
@@ -37,4 +34,7 @@ schemaComposer.Mutation.addFields({
   ...mapLayerMutation,
 });
 
+schemaComposer.Subscription.addFields({
+  ...mapLayerSubscription,
+})
 export const graphqlSchema = schemaComposer.buildSchema();

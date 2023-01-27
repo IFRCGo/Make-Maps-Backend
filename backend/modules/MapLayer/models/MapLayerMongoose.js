@@ -21,7 +21,7 @@ const MapLayerSchema = mongoose.Schema(
     //by different users, and has different text and data layer
   },
   {
-    timestaps: true,
+    timestamps: true,
     collection: "Map Layer",
     autoCreate: true,
   }
