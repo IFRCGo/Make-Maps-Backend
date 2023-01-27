@@ -1,8 +1,7 @@
 //sending emails to subscribers
 const require = createRequire(import.meta.url);
-import { Disaster } from "./../Disaster/models/DisasterMongoose";
-
-var cron = require("node-cron");
+import { Disaster } from "../Disaster/models/DisasterMongoose";
+import cron from "node-cron";
 
 export const StartMapSubscription = () => {
   //cron.schedule("0 */2 * * *", () => {
