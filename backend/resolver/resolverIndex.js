@@ -7,7 +7,7 @@ import {
 import {
   disasterQuery,
   disasterMutation,
-  disasterSubscription
+  disasterSubscription,
 } from "../modules/Disaster/resolver/DisasterResolver.js";
 
 import {
@@ -17,9 +17,12 @@ import {
 
 import { pinQuery, pinMutation } from "../modules/Pin/resolver/PinResolver.js";
 
-import { mapLayerQuery, mapLayerMutation } from "../modules/MapLayer/resolver/MapLayerResolver.js";
-import {DisasterTC} from "../modules/Disaster/schema/DisasterSchema.js";
-import {pubsub} from "../server.js";
+import {
+  mapLayerQuery,
+  mapLayerMutation,
+} from "../modules/MapLayer/resolver/MapLayerResolver.js";
+import { DisasterTC } from "../modules/Disaster/schema/DisasterSchema.js";
+import { pubsub } from "../server.js";
 
 schemaComposer.Query.addFields({
   ...disasterQuery,
@@ -41,8 +44,10 @@ schemaComposer.Subscription.addFields({
   ...disasterSubscription,
   disasterSubscriptionInline: {
     type: DisasterTC,
-    resolve: (payload) => { payload._id},
+    resolve: (payload) => {
+      payload._id;
+    },
     subscribe: () => pubsub.asyncIterator(["DISASTER_UPDATED"]),
-  }
-})
+  },
+});
 export const graphqlSchema = schemaComposer.buildSchema();

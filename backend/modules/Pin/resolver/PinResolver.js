@@ -47,10 +47,33 @@ export const pinMutation = {
       if (removedPin) {
         await Disaster.findByIdAndUpdate(
           { _id: removedPin.disaster },
-          { $pull: { pins: removedPin._id } }
+          { $pull: { pins: removedPin._id }, lastUpdated: new Date() }
         );
       }
       return { record: removedPin };
+    },
+  },
+
+  PinUpdateByIdCustom: {
+    type: PinCustomPayload,
+    args: {
+      _id: "MongoID!",
+      record: "UpdateByIdPinInput!",
+    },
+    resolve: async (_, args) => {
+      var pin = await Pin.findById(args._id);
+      if (pin) {
+        pin = await Pin.findByIdAndUpdate(
+          { _id: args._id },
+          { ...args.record, date: new Date() },
+          { new: true }
+        );
+        await Disaster.findByIdAndUpdate(
+          { _id: pin.disaster },
+          { lastUpdated: new Date() }
+        );
+      }
+      return { record: pin };
     },
   },
 };
