@@ -1,6 +1,8 @@
 //Importing So Require Works in Node 14+
-import { createRequire } from "module";
 const require = createRequire(import.meta.url);
+
+import { createRequire } from "module";
+import { Disaster } from "./../../Disaster/models/DisasterMongoose.js";
 const mongoose = require("mongoose");
 
 const TextSchema = mongoose.Schema(
@@ -36,5 +38,11 @@ const TextSchema = mongoose.Schema(
   }
 );
 TextSchema.index({ textCoordinates: "2dsphere" });
-
+TextSchema.pre("save", async function (next) {
+  await Disaster.updateOne(
+    { _id: this.disaster },
+    { $push: { texts: this._id }, $set: { lastUpdated: new Date() } }
+  );
+  next();
+});
 export const Text = mongoose.model("Text", TextSchema);

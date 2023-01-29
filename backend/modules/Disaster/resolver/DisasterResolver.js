@@ -1,7 +1,15 @@
 import { DisasterTC } from "../schema/DisasterSchema.js";
 import { Disaster } from "./../models/DisasterMongoose.js";
 import { Pin } from "./../../Pin/models/PinMongoose.js";
-import {pubsub} from "../../../server.js";
+import { pubsub } from "../../../server.js";
+import { GraphQLObjectType } from "graphql";
+
+const DisasterCustomPayload = new GraphQLObjectType({
+  name: "DisasterCustomPayload",
+  fields: {
+    record: { type: DisasterTC.getType() },
+  },
+});
 
 export const disasterQuery = {
   disasterById: DisasterTC.mongooseResolvers.findById(),
@@ -23,6 +31,20 @@ export const disasterQuery = {
   disasterCount: DisasterTC.mongooseResolvers.count(),
   disasterConnection: DisasterTC.mongooseResolvers.connection(),
   disasterPagination: DisasterTC.mongooseResolvers.pagination(),
+
+  getDisasterData: {
+    type: DisasterCustomPayload,
+    args: {
+      _id: "MongoID!",
+    },
+    resolve: async (_, args) => {
+      const allDisasters = await Disaster.findById(args._id)
+        .populate("pins")
+        .exec();
+      console.log(allDisasters);
+      return allDisasters;
+    },
+  },
 };
 
 export const disasterMutation = {
@@ -31,12 +53,33 @@ export const disasterMutation = {
   disasterUpdateById: DisasterTC.mongooseResolvers.updateById(),
   disasterRemoveById: DisasterTC.mongooseResolvers.removeById(),
   disasterRemoveOne: DisasterTC.mongooseResolvers.removeOne(),
+  addEmailSubscribers: {
+    type: DisasterCustomPayload,
+    args: {
+      _id: "MongoID!",
+      user_id: "MongoID!",
+    },
+    resolve: async (_, args) => {
+      const disaster = await Disaster.findById(args._id);
+      if (disaster) {
+        const disasters = await Disaster.findByIdAndUpdate(
+          { _id: args._id },
+          { $addToSet: { subscriptions: args.user_id } } //prevents addition of duplicated user_ID
+        );
+        return { record: disasters };
+      } else {
+        console.log("Error");
+      }
+    },
+  },
 };
 
 export const disasterSubscription = {
   disasterSubscription: {
     type: DisasterTC,
-    resolve: (payload) => { Disaster.findById(payload._id)},
+    resolve: (payload) => {
+      Disaster.findById(payload._id);
+    },
     subscribe: () => pubsub.asyncIterator(["DISASTER_UPDATED"]),
-  }
-}
+  },
+};
