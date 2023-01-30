@@ -54,7 +54,7 @@ const DisasterSchema = mongoose.Schema(
     subscriptions: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   },
   {
-    timestaps: true,
+    timestamps: true,
     collection: "Disaster",
     autoCreate: true,
   }

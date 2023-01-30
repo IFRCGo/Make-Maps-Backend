@@ -1,8 +1,9 @@
 import { DisasterTC } from "../schema/DisasterSchema.js";
 import { Disaster } from "./../models/DisasterMongoose.js";
-import { Pin } from "./../../Pin/models/PinMongoose.js";
+
 import { pubsub } from "../../../server.js";
 import { GraphQLObjectType } from "graphql";
+import { FunctifiedAsync } from './FunctifiedAsync.js';
 
 const DisasterCustomPayload = new GraphQLObjectType({
   name: "DisasterCustomPayload",
@@ -76,10 +77,16 @@ export const disasterMutation = {
 
 export const disasterSubscription = {
   disasterSubscription: {
-    type: DisasterTC,
-    resolve: (payload) => {
-      Disaster.findById(payload._id);
+    args: {
+      _id: "MongoID!",
     },
-    subscribe: () => pubsub.asyncIterator(["DISASTER_UPDATED"]),
+    type: DisasterTC,
+    resolve: async (_, args) => await Disaster.findById(args._id),
+    // subscribe: () => pubsub.asyncIterator(['DISASTER_UPDATED']),
+    subscribe: () =>
+        FunctifiedAsync.map(pubsub.asyncIterator(['DISASTER_UPDATED']), (_id) => {
+          return Disaster.findById(_id);
+        })
+
   },
 };

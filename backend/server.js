@@ -10,7 +10,6 @@ dotenv.config();
 
 import { PubSub } from 'graphql-subscriptions';
 export const pubsub = new PubSub();
-pubsub.publish("DISASTER_UPDATED",{data: 42})
 
 import { WebSocketServer } from 'ws';
 import { useServer } from 'graphql-ws/lib/use/ws';
@@ -57,6 +56,8 @@ async function startApolloServer(typeDefs, resolvers) {
 
 // Hand in the schema we just created and have the
 // WebSocketServer start listening.
+  //TODO Bug exists with the WS Server ingesting the schema
+
   const serverCleanup = useServer({ graphqlSchema }, wsServer);
 
   const server = new ApolloServer({
@@ -98,6 +99,18 @@ function incrementNumber() {
   currentNumber++;
   pubsub.publish('DISASTER_UPDATED', { numberIncremented: currentNumber });
   setTimeout(incrementNumber, 1000);
+}
+
+// Start incrementing
+incrementNumber();
+
+// In the background, increment a number every second and notify subscribers when it changes.
+let currentNumber = 0;
+function incrementNumber() {
+  currentNumber++;
+  pubsub.publish('DISASTER_UPDATED', { numberIncremented: currentNumber });
+  setTimeout(incrementNumber, 1000);
+  console.log(currentNumber)
 }
 
 // Start incrementing

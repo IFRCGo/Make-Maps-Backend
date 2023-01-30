@@ -1,5 +1,4 @@
 import { MapLayerTC } from "../schema/MapLayerSchema.js";
-import { pubsub } from '../../../server.js';
 
 export const mapLayerQuery = {
   mapLayerById: MapLayerTC.mongooseResolvers.findById(),

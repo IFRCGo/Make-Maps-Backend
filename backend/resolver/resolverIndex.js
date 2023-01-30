@@ -21,8 +21,6 @@ import {
   mapLayerQuery,
   mapLayerMutation,
 } from "../modules/MapLayer/resolver/MapLayerResolver.js";
-import { DisasterTC } from "../modules/Disaster/schema/DisasterSchema.js";
-import { pubsub } from "../server.js";
 
 schemaComposer.Query.addFields({
   ...disasterQuery,
@@ -41,13 +39,7 @@ schemaComposer.Mutation.addFields({
 });
 
 schemaComposer.Subscription.addFields({
-  ...disasterSubscription,
-  disasterSubscriptionInline: {
-    type: DisasterTC,
-    resolve: (payload) => {
-      payload._id;
-    },
-    subscribe: () => pubsub.asyncIterator(["DISASTER_UPDATED"]),
-  },
+  ...disasterSubscription
 });
 export const graphqlSchema = schemaComposer.buildSchema();
+
