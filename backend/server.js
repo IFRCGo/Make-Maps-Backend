@@ -8,6 +8,12 @@ const require = createRequire(import.meta.url);
 const dotenv = require("dotenv");
 dotenv.config();
 
+import { PubSub } from 'graphql-subscriptions';
+export const pubsub = new PubSub();
+
+import { WebSocketServer } from 'ws';
+import { useServer } from 'graphql-ws/lib/use/ws';
+
 import { graphqlSchema } from "./resolver/resolverIndex.js";
 
 import { ApolloServer } from "apollo-server-express";
@@ -43,6 +49,20 @@ const PORT = process.env.PORT || 9091;
 async function startApolloServer(typeDefs, resolvers) {
   const httpServer = http.createServer(app);
 
+// Creating the WebSocket server
+  const wsServer = new WebSocketServer({
+    // This is the `httpServer` we created in a previous step.
+    server: httpServer,
+    // Pass a different path here if app.use
+    // serves expressMiddleware at a different path
+    path: '/graphql',
+  });
+
+// Hand in the schema we just created and have the
+// WebSocketServer start listening.
+  //TODO Bug exists with the WS Server ingesting the schema
+  const serverCleanup = useServer({ graphqlSchema }, wsServer);
+
   const server = new ApolloServer({
     schema: graphqlSchema,
     csrfPrevention: true,
@@ -62,5 +82,17 @@ async function startApolloServer(typeDefs, resolvers) {
     `🚀 Graph Server ready at http://localhost:${PORT}${server.graphqlPath}`
   );
 }
+
+// In the background, increment a number every second and notify subscribers when it changes.
+let currentNumber = 0;
+function incrementNumber() {
+  currentNumber++;
+  pubsub.publish('DISASTER_UPDATED', { numberIncremented: currentNumber });
+  setTimeout(incrementNumber, 1000);
+  console.log(currentNumber)
+}
+
+// Start incrementing
+incrementNumber();
 
 startApolloServer();
