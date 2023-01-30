@@ -3,7 +3,6 @@ import { Disaster } from "./../models/DisasterMongoose.js";
 
 import { pubsub } from "../../../server.js";
 import { GraphQLObjectType } from "graphql";
-import { FunctifiedAsync } from './FunctifiedAsync.js';
 
 const DisasterCustomPayload = new GraphQLObjectType({
   name: "DisasterCustomPayload",
@@ -75,6 +74,10 @@ export const disasterMutation = {
   },
 };
 
+const stream = Disaster.watch().on('change', (data) => {
+  pubsub.publish('DISASTER_UPDATED', {caseAdded: data.fullDocument});
+});
+
 export const disasterSubscription = {
   disasterSubscription: {
     args: {
@@ -82,11 +85,6 @@ export const disasterSubscription = {
     },
     type: DisasterTC,
     resolve: async (_, args) => await Disaster.findById(args._id),
-    // subscribe: () => pubsub.asyncIterator(['DISASTER_UPDATED']),
-    subscribe: () =>
-        FunctifiedAsync.map(pubsub.asyncIterator(['DISASTER_UPDATED']), (_id) => {
-          return Disaster.findById(_id);
-        })
-
+    subscribe: () => pubsub.asyncIterator(['DISASTER_UPDATED']),
   },
 };
