@@ -104,16 +104,5 @@ function incrementNumber() {
 // Start incrementing
 incrementNumber();
 
-// In the background, increment a number every second and notify subscribers when it changes.
-let currentNumber = 0;
-function incrementNumber() {
-  currentNumber++;
-  pubsub.publish('DISASTER_UPDATED', { numberIncremented: currentNumber });
-  setTimeout(incrementNumber, 1000);
-  console.log(currentNumber)
-}
-
-// Start incrementing
-incrementNumber();
 
 startApolloServer();
