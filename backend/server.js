@@ -91,15 +91,4 @@ async function startApolloServer(typeDefs, resolvers) {
     `🚀 Graph Server ready at http://localhost:${PORT}${server.graphqlPath}`
   );
 }
-// In the background, increment a number every second and notify subscribers when it changes.
-// let currentNumber = "63d2a2c2899458941dd529b3";
-// function incrementNumber() {
-//   pubsub.publish('DISASTER_UPDATED', { _id: currentNumber });
-//   setTimeout(incrementNumber, 1000);
-// }
-//
-// // Start incrementing
-// incrementNumber();
-
-
 startApolloServer();
