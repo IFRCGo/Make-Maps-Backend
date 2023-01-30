@@ -6,11 +6,11 @@ const mongoose = require("mongoose");
 const DisasterSchema = mongoose.Schema(
   {
     disasterName: { type: "String", required: true },
-    diasterType: { type: "String", required: true },
+    disasterType: { type: "String", required: true },
     date: { type: Date, required: true },
     region: { type: "String", required: true },
     location: { type: "String" },
-    diasterCoordinates: {
+    disasterCoordinates: {
       type: {
         type: String,
         enum: ["Point"],
@@ -21,7 +21,7 @@ const DisasterSchema = mongoose.Schema(
         required: true,
       },
     },
-    diasterInformation: { type: "String" },
+    disasterInformation: { type: "String" },
     amount_requested: { type: String, required: true },
     amount_funded: { type: String, required: true },
     createdBy: {
@@ -59,7 +59,7 @@ const DisasterSchema = mongoose.Schema(
     autoCreate: true,
   }
 );
-DisasterSchema.index({ diasterCoordinates: "2dsphere" });
+DisasterSchema.index({ disasterCoordinates: "2dsphere" });
 
 export const Disaster = mongoose.model("Disaster", DisasterSchema);
 

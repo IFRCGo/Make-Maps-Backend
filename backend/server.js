@@ -56,9 +56,7 @@ async function startApolloServer(typeDefs, resolvers) {
 
 // Hand in the schema we just created and have the
 // WebSocketServer start listening.
-  //TODO Bug exists with the WS Server ingesting the schema
-
-  const serverCleanup = useServer({ graphqlSchema }, wsServer);
+  const serverCleanup = useServer({ schema: graphqlSchema }, wsServer);
 
   const server = new ApolloServer({
     schema: graphqlSchema,
@@ -94,15 +92,14 @@ async function startApolloServer(typeDefs, resolvers) {
   );
 }
 // In the background, increment a number every second and notify subscribers when it changes.
-let currentNumber = 0;
-function incrementNumber() {
-  currentNumber++;
-  pubsub.publish('DISASTER_UPDATED', { numberIncremented: currentNumber });
-  setTimeout(incrementNumber, 1000);
-}
-
-// Start incrementing
-incrementNumber();
+// let currentNumber = "63d2a2c2899458941dd529b3";
+// function incrementNumber() {
+//   pubsub.publish('DISASTER_UPDATED', { _id: currentNumber });
+//   setTimeout(incrementNumber, 1000);
+// }
+//
+// // Start incrementing
+// incrementNumber();
 
 
 startApolloServer();
