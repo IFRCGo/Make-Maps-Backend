@@ -1,5 +1,6 @@
 import { DisasterTC } from "../schema/DisasterSchema.js";
 import { Disaster } from "./../models/DisasterMongoose.js";
+
 import { pubsub } from "../../../server.js";
 import { GraphQLObjectType } from "graphql";
 import { FunctifiedAsync } from './FunctifiedAsync.js';
@@ -86,5 +87,6 @@ export const disasterSubscription = {
         FunctifiedAsync.map(pubsub.asyncIterator(['DISASTER_UPDATED']), (_id) => {
           return Disaster.findById(_id);
         })
+
   },
 };

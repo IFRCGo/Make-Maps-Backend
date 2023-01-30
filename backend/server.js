@@ -3,7 +3,7 @@ import express from "express";
 //Importing So Require Works in Node 14+
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
-
+var cron = require("node-cron");
 //Env Variables Usage
 const dotenv = require("dotenv");
 dotenv.config();
@@ -17,13 +17,9 @@ import { useServer } from 'graphql-ws/lib/use/ws';
 import { graphqlSchema } from "./resolver/resolverIndex.js";
 
 import { ApolloServer } from "apollo-server-express";
-import {
-  ApolloServerPluginDrainHttpServer,
-  ApolloServerPluginLandingPageLocalDefault,
-} from "apollo-server-core";
+import { ApolloServerPluginDrainHttpServer } from "apollo-server-core";
 import http from "http";
 import { connectDB } from "./utils/database.js";
-
 //cors
 var cors = require("cors");
 
@@ -61,13 +57,28 @@ async function startApolloServer(typeDefs, resolvers) {
 // Hand in the schema we just created and have the
 // WebSocketServer start listening.
   //TODO Bug exists with the WS Server ingesting the schema
+
   const serverCleanup = useServer({ graphqlSchema }, wsServer);
 
   const server = new ApolloServer({
     schema: graphqlSchema,
+    plugins:[
+      // Proper shutdown for the HTTP server.
+      ApolloServerPluginDrainHttpServer({ httpServer }),
+
+      // Proper shutdown for the WebSocket server.
+      {
+        async serverWillStart() {
+          return {
+            async drainServer() {
+              await serverCleanup.dispose();
+            },
+          };
+        },
+      },
+    ],
     csrfPrevention: true,
     cache: "bounded",
-    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });
 
   await server.start();
@@ -82,6 +93,16 @@ async function startApolloServer(typeDefs, resolvers) {
     `🚀 Graph Server ready at http://localhost:${PORT}${server.graphqlPath}`
   );
 }
+// In the background, increment a number every second and notify subscribers when it changes.
+let currentNumber = 0;
+function incrementNumber() {
+  currentNumber++;
+  pubsub.publish('DISASTER_UPDATED', { numberIncremented: currentNumber });
+  setTimeout(incrementNumber, 1000);
+}
+
+// Start incrementing
+incrementNumber();
 
 // In the background, increment a number every second and notify subscribers when it changes.
 let currentNumber = 0;

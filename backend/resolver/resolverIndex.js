@@ -1,9 +1,5 @@
-import { schemaComposer } from 'graphql-compose';
+import { schemaComposer } from "graphql-compose";
 
-<<<<<<< Updated upstream
-import {userMutation, userQuery} from "../modules/User/resolver/UserResolver.js";
-import {disasterQuery, disasterMutation } from "../modules/Diaster/resolver/DisasterResolver.js";
-=======
 import {
   userMutation,
   userQuery,
@@ -25,24 +21,25 @@ import {
   mapLayerQuery,
   mapLayerMutation,
 } from "../modules/MapLayer/resolver/MapLayerResolver.js";
->>>>>>> Stashed changes
 
 schemaComposer.Query.addFields({
-    ...disasterQuery,
-    ...userQuery
-})
+  ...disasterQuery,
+  ...userQuery,
+  ...textQuery,
+  ...pinQuery,
+  ...mapLayerQuery,
+});
 
 schemaComposer.Mutation.addFields({
-    ...disasterMutation,
-    ...userMutation
-})
+  ...disasterMutation,
+  ...userMutation,
+  ...textMutation,
+  ...pinMutation,
+  ...mapLayerMutation,
+});
 
-
-<<<<<<< Updated upstream
-export const graphqlSchema = schemaComposer.buildSchema();
-=======
 schemaComposer.Subscription.addFields({
   ...disasterSubscription
 });
 export const graphqlSchema = schemaComposer.buildSchema();
->>>>>>> Stashed changes
+
