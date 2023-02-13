@@ -39,6 +39,7 @@ jobs:
           push: true
           tags: ghcr.io/${{ env.REPO }}:${{ github.sha }}
           file: ./backend/Dockerfile
+          ports: 9092:9092
 
   deploy:
     permissions:
