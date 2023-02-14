@@ -61,4 +61,4 @@ jobs:
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C7781ABE22564DF89122B66B303E79F3 }}
           images: 'ghcr.io/${{ env.REPO }}:${{ github.sha }}'
           ports: 9092:9092
-          app-settings-json: '[{"WEBSITES_PORT": "9092"}]'
+          app-settings-json: '[{"WEBSITES_PORT": "9092", "MONGO_URL": "${{ env.MONGO_URL }}"}]'
