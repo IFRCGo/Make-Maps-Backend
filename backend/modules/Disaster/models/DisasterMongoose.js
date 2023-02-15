@@ -72,11 +72,11 @@ export const Disaster = mongoose.model("Disaster", DisasterSchema);
    "records":[
       {
          "disasterName":"Hurricane Maria",
-         "diasterType":"Natural Disaster",
+         "disasterType":"Natural Disaster",
          "date":"2017-09-20",
          "region":"Caribbean",
          "location":"Puerto Rico",
-         "diasterCoordinates":{
+         "disasterCoordinates":{
             "type":"Point",
             "coordinates":[
               18.46633000,
@@ -84,18 +84,18 @@ export const Disaster = mongoose.model("Disaster", DisasterSchema);
                
             ]
          },
-         "diasterInformation":"Category 4 storm that caused widespread destruction",
+         "disasterInformation":"Category 4 storm that caused widespread destruction",
          "amount_requested":"1000000",
          "amount_funded":"800000",
          "createdBy": "63d10ad4e30540f8a78a183d",
       },
       {
          "disasterName":"Wildfire in California",
-         "diasterType":"Natural Disaster",
+         "disasterType":"Natural Disaster",
          "date":"2018-11-08",
          "region":"West Coast",
          "location":"Paradise, CA",
-         "diasterCoordinates":{
+         "disasterCoordinates":{
             "type":"Point",
             "coordinates":[
                
@@ -103,7 +103,7 @@ export const Disaster = mongoose.model("Disaster", DisasterSchema);
                39.767380,
             ]
          },
-         "diasterInformation":"Devastating wildfire that destroyed thousands of homes",
+         "disasterInformation":"Devastating wildfire that destroyed thousands of homes",
          "amount_requested":"2000000",
          "amount_funded":"1800000",
          "createdBy": "63d10ad4e30540f8a78a183d",
