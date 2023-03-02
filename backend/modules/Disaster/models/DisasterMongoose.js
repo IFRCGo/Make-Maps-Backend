@@ -42,7 +42,7 @@ const DisasterSchema = mongoose.Schema(
         ref: "Text",
       },
     ],
-    mapLayers: [
+    drawingLayers: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "MapLayer",

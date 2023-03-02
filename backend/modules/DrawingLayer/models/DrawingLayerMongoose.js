@@ -3,7 +3,7 @@ import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const mongoose = require("mongoose");
 
-const MapLayerSchema = mongoose.Schema(
+const DrawingLayerSchema = mongoose.Schema(
   {
     disaster: {
       type: mongoose.Types.ObjectId,
@@ -14,21 +14,29 @@ const MapLayerSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
     },
-    layerName: { type: String, required: true },
-    layerType: { type: String, required: true },
-    layerConfig: { type: Object, required: true },
-    date: { type: Date, default: Date.now },
-    //by different users, and has different text and data layer
+
+    featureType: {
+      type: String,
+      enum: ["Polygon", "MultiLineString", "LineString"],
+      required: true,
+    },
+    featureGeoJSON: { type: Object, required: true },
   },
   {
     timestamps: true,
     collection: "Map Layer",
     autoCreate: true,
+    //    id: false,
   }
 );
-
-export const MapLayer = mongoose.model("MapLayer", MapLayerSchema);
-
+DrawingLayerSchema.pre("save", async function (next) {
+  await Disaster.updateOne(
+    { _id: this.disaster },
+    { $push: { drawingLayers: this._id }, $set: { lastUpdated: new Date() } }
+  );
+  next();
+});
+export const DrawingLayer = mongoose.model("DrawingLayer", DrawingLayerSchema);
 /* 
 //example data layer
 const mapLayer = new MapLayer({

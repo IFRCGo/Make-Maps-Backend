@@ -18,16 +18,16 @@ import {
 import { pinQuery, pinMutation } from "../modules/Pin/resolver/PinResolver.js";
 
 import {
-  mapLayerQuery,
-  mapLayerMutation,
-} from "../modules/MapLayer/resolver/MapLayerResolver.js";
+  drawingLayerQuery,
+  drawingLayerMutation,
+} from "../modules/DrawingLayer/resolver/DrawingLayerResolver.js";
 
 schemaComposer.Query.addFields({
   ...disasterQuery,
   ...userQuery,
   ...textQuery,
   ...pinQuery,
-  ...mapLayerQuery,
+  ...drawingLayerQuery,
 });
 
 schemaComposer.Mutation.addFields({
@@ -35,11 +35,10 @@ schemaComposer.Mutation.addFields({
   ...userMutation,
   ...textMutation,
   ...pinMutation,
-  ...mapLayerMutation,
+  ...drawingLayerMutation,
 });
 
 schemaComposer.Subscription.addFields({
-  ...disasterSubscription
+  ...disasterSubscription,
 });
 export const graphqlSchema = schemaComposer.buildSchema();
-
