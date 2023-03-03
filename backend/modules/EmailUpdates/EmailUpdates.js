@@ -18,7 +18,7 @@ const cron = require("node-cron");
 export const StartMapSubscription = () => {
   cron.schedule("* */2 * * * *", () => {
     Disaster.find({})
-      .populate("pins texts drawingLayer subscriptions")
+      .populate("pins texts drawingLayers subscriptions")
       .exec((err, disasters) => {
         if (err) {
           console.log(err);
