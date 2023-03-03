@@ -45,7 +45,7 @@ const DisasterSchema = mongoose.Schema(
     drawingLayers: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "MapLayer",
+        ref: "DrawingLayer",
       },
     ],
     lastUpdated: { type: Date, default: Date.now() },

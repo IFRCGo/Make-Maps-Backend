@@ -24,7 +24,7 @@ const DrawingLayerSchema = mongoose.Schema(
   },
   {
     timestamps: true,
-    collection: "Map Layer",
+    collection: "Drawing Layer",
     autoCreate: true,
     //    id: false,
   }
