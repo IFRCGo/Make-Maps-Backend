@@ -1,4 +1,7 @@
+import { Disaster } from "../../Disaster/models/DisasterMongoose.js";
+import { DrawingLayer } from "../models/DrawingLayerMongoose.js";
 import { DrawingLayerTC } from "../schema/DrawingLayerSchema.js";
+import { GraphQLObjectType } from "graphql";
 
 export const drawingLayerQuery = {
   drawingLayerById: DrawingLayerTC.mongooseResolvers.findById(),
@@ -29,10 +32,59 @@ export const drawingLayerQuery = {
   drawingLayerPagination: DrawingLayerTC.mongooseResolvers.pagination(),
 };
 
+const DrawingLayerCustomPayload = new GraphQLObjectType({
+  name: "DrawingLayerRemoveOneCustomPayload",
+  fields: {
+    record: { type: DrawingLayerTC.getType() },
+  },
+});
+
 export const drawingLayerMutation = {
   drawingLayerCreateOne: DrawingLayerTC.mongooseResolvers.createOne(),
   drawingLayerCreateMany: DrawingLayerTC.mongooseResolvers.createMany(),
   drawingLayerUpdateById: DrawingLayerTC.mongooseResolvers.updateById(),
   drawingLayerRemoveById: DrawingLayerTC.mongooseResolvers.removeById(),
   drawingLayerRemoveOne: DrawingLayerTC.mongooseResolvers.removeOne(),
+
+  drawingLayerRemoveOneCustom: {
+    type: DrawingLayerCustomPayload,
+    args: {
+      _id: "MongoID!",
+    },
+    resolve: async (_, args) => {
+      const removedLayer = await DrawingLayer.findByIdAndRemove(args._id);
+      if (removedLayer) {
+        await Disaster.findByIdAndUpdate(
+          { _id: removedLayer.disaster },
+          {
+            $pull: { drawingLayers: removedLayer._id },
+            lastUpdated: new Date(),
+          }
+        );
+      }
+      return { record: removedLayer };
+    },
+  },
+  drawingLayerUpdateByIdCustom: {
+    type: DrawingLayerCustomPayload,
+    args: {
+      _id: "MongoID!",
+      record: "UpdateByIdDrawingLayerInput!",
+    },
+    resolve: async (_, args) => {
+      var layer = await DrawingLayer.findById(args._id);
+      if (layer) {
+        layer = await DrawingLayer.findByIdAndUpdate(
+          { _id: args._id },
+          { ...args.record, date: new Date() },
+          { new: true }
+        );
+        await Disaster.findByIdAndUpdate(
+          { _id: layer.disaster },
+          { lastUpdated: new Date() }
+        );
+      }
+      return { record: layer };
+    },
+  },
 };
