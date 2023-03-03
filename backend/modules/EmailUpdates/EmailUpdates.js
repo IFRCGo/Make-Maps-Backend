@@ -18,7 +18,7 @@ const cron = require("node-cron");
 export const StartMapSubscription = () => {
   cron.schedule("* */2 * * * *", () => {
     Disaster.find({})
-      .populate("pins texts mapLayers subscriptions")
+      .populate("pins texts drawingLayer subscriptions")
       .exec((err, disasters) => {
         if (err) {
           console.log(err);
@@ -49,9 +49,9 @@ export const StartMapSubscription = () => {
                   isUpdate = true;
                 }
               });
-              disaster.mapLayers.forEach((mapLayer) => {
+              disaster.drawingLayers.forEach((drawingLayer) => {
                 if (
-                  mapLayer.date.getTime() > disaster.lastSentEmail.getTime()
+                  drawingLayer.date.getTime() > disaster.lastSentEmail.getTime()
                 ) {
                   isUpdate = true;
                 }

@@ -1,31 +1,38 @@
-import { drawingLayerTC } from "../schema/DrawingLayerSchema.js";
+import { DrawingLayerTC } from "../schema/DrawingLayerSchema.js";
 
 export const drawingLayerQuery = {
-  drawingLayerById: drawingLayerTC.mongooseResolvers.findById(),
-  drawingLayerByIds: drawingLayerTC.mongooseResolvers.findByIds(),
-  drawingLayerOne: drawingLayerTC.mongooseResolvers.findOne(),
-  drawingLayerMany: drawingLayerTC.mongooseResolvers.findMany(),
-  drawingLayerDataLoader: drawingLayerTC.mongooseResolvers.dataLoader(),
-  drawingLayerDataLoaderMany: drawingLayerTC.mongooseResolvers.dataLoaderMany(),
-  drawingLayerByIdLean: drawingLayerTC.mongooseResolvers.findById({ lean: true }),
-  drawingLayerByIdsLean: drawingLayerTC.mongooseResolvers.findByIds({ lean: true }),
-  drawingLayerOneLean: drawingLayerTC.mongooseResolvers.findOne({ lean: true }),
-  drawingLayerManyLean: drawingLayerTC.mongooseResolvers.findMany({ lean: true }),
-  drawingLayerDataLoaderLean: drawingLayerTC.mongooseResolvers.dataLoader({
+  drawingLayerById: DrawingLayerTC.mongooseResolvers.findById(),
+  drawingLayerByIds: DrawingLayerTC.mongooseResolvers.findByIds(),
+  drawingLayerOne: DrawingLayerTC.mongooseResolvers.findOne(),
+  drawingLayerMany: DrawingLayerTC.mongooseResolvers.findMany(),
+  drawingLayerDataLoader: DrawingLayerTC.mongooseResolvers.dataLoader(),
+  drawingLayerDataLoaderMany: DrawingLayerTC.mongooseResolvers.dataLoaderMany(),
+  drawingLayerByIdLean: DrawingLayerTC.mongooseResolvers.findById({
     lean: true,
   }),
-  drawingLayerDataLoaderManyLean: drawingLayerTC.mongooseResolvers.dataLoaderMany({
+  drawingLayerByIdsLean: DrawingLayerTC.mongooseResolvers.findByIds({
     lean: true,
   }),
-  drawingLayerCount: drawingLayerTC.mongooseResolvers.count(),
-  drawingLayerConnection: drawingLayerTC.mongooseResolvers.connection(),
-  drawingLayerPagination: drawingLayerTC.mongooseResolvers.pagination(),
+  drawingLayerOneLean: DrawingLayerTC.mongooseResolvers.findOne({ lean: true }),
+  drawingLayerManyLean: DrawingLayerTC.mongooseResolvers.findMany({
+    lean: true,
+  }),
+  drawingLayerDataLoaderLean: DrawingLayerTC.mongooseResolvers.dataLoader({
+    lean: true,
+  }),
+  drawingLayerDataLoaderManyLean:
+    DrawingLayerTC.mongooseResolvers.dataLoaderMany({
+      lean: true,
+    }),
+  drawingLayerCount: DrawingLayerTC.mongooseResolvers.count(),
+  drawingLayerConnection: DrawingLayerTC.mongooseResolvers.connection(),
+  drawingLayerPagination: DrawingLayerTC.mongooseResolvers.pagination(),
 };
 
 export const drawingLayerMutation = {
-  drawingLayerCreateOne: drawingLayerTC.mongooseResolvers.createOne(),
-  drawingLayerCreateMany: drawingLayerTC.mongooseResolvers.createMany(),
-  drawingLayerUpdateById: drawingLayerTC.mongooseResolvers.updateById(),
-  drawingLayerRemoveById: drawingLayerTC.mongooseResolvers.removeById(),
-  drawingLayerRemoveOne: drawingLayerTC.mongooseResolvers.removeOne(),
+  drawingLayerCreateOne: DrawingLayerTC.mongooseResolvers.createOne(),
+  drawingLayerCreateMany: DrawingLayerTC.mongooseResolvers.createMany(),
+  drawingLayerUpdateById: DrawingLayerTC.mongooseResolvers.updateById(),
+  drawingLayerRemoveById: DrawingLayerTC.mongooseResolvers.removeById(),
+  drawingLayerRemoveOne: DrawingLayerTC.mongooseResolvers.removeOne(),
 };
