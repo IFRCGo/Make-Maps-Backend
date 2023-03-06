@@ -92,6 +92,6 @@ async function startApolloServer(typeDefs, resolvers) {
     `🚀 Graph Server ready at http://localhost:${PORT}${server.graphqlPath}`
   );
 
-  StartMapSubscription();
+  // StartMapSubscription();
 }
 startApolloServer();
