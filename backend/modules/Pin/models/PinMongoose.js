@@ -11,7 +11,6 @@ const PinSchema = mongoose.Schema(
       required: true,
     },
     pinText: { type: String },
-    date: { type: Date, default: Date.now() },
     pinCoordinates: {
       type: {
         type: String,
@@ -30,7 +29,7 @@ const PinSchema = mongoose.Schema(
     },
   },
   {
-    timestaps: true,
+    timestamps: true,
     collection: "Pin",
     autoCreate: true,
   }
@@ -39,7 +38,7 @@ PinSchema.index({ pinCoordinates: "2dsphere" });
 PinSchema.pre("save", async function (next) {
   await Disaster.updateOne(
     { _id: this.disaster },
-    { $push: { pins: this._id }, $set: { lastUpdated: new Date() } }
+    { $push: { pins: this._id } }
   );
   next();
 });

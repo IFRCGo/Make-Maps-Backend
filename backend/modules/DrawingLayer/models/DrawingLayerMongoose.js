@@ -22,7 +22,6 @@ const DrawingLayerSchema = mongoose.Schema(
       required: true,
     },
     featureGeoJSON: { type: Object, required: true },
-    date: { type: Date, default: Date.now() },
   },
   {
     timestamps: true,
@@ -34,7 +33,7 @@ const DrawingLayerSchema = mongoose.Schema(
 DrawingLayerSchema.pre("save", async function (next) {
   await Disaster.updateOne(
     { _id: this.disaster },
-    { $push: { drawingLayers: this._id }, $set: { lastUpdated: new Date() } }
+    { $push: { drawingLayers: this._id } }
   );
   next();
 });

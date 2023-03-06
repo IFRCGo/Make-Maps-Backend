@@ -58,7 +58,6 @@ export const drawingLayerMutation = {
           { _id: removedLayer.disaster },
           {
             $pull: { drawingLayers: removedLayer._id },
-            lastUpdated: new Date(),
           }
         );
       }
@@ -76,13 +75,10 @@ export const drawingLayerMutation = {
       if (layer) {
         layer = await DrawingLayer.findByIdAndUpdate(
           { _id: args._id },
-          { ...args.record, date: new Date() },
+          { ...args.record },
           { new: true }
         );
-        await Disaster.findByIdAndUpdate(
-          { _id: layer.disaster },
-          { lastUpdated: new Date() }
-        );
+        await Disaster.findByIdAndUpdate({ _id: layer.disaster });
       }
       return { record: layer };
     },

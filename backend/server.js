@@ -76,6 +76,7 @@ async function startApolloServer(typeDefs, resolvers) {
         },
       },
     ],
+    //context: ({ req, res }) => ({ req, res, pubsub }), // add pubsub to the context
     csrfPrevention: true,
     cache: "bounded",
   });

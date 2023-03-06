@@ -47,7 +47,7 @@ export const pinMutation = {
       if (removedPin) {
         await Disaster.findByIdAndUpdate(
           { _id: removedPin.disaster },
-          { $pull: { pins: removedPin._id }, lastUpdated: new Date() }
+          { $pull: { pins: removedPin._id } }
         );
       }
       return { record: removedPin };
@@ -65,13 +65,10 @@ export const pinMutation = {
       if (pin) {
         pin = await Pin.findByIdAndUpdate(
           { _id: args._id },
-          { ...args.record, date: new Date() },
+          { ...args.record },
           { new: true }
         );
-        await Disaster.findByIdAndUpdate(
-          { _id: pin.disaster },
-          { lastUpdated: new Date() }
-        );
+        await Disaster.findByIdAndUpdate({ _id: pin.disaster });
       }
       return { record: pin };
     },

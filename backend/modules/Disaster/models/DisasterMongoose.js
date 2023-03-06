@@ -48,7 +48,6 @@ const DisasterSchema = mongoose.Schema(
         ref: "DrawingLayer",
       },
     ],
-    lastUpdated: { type: Date, default: Date.now() },
     lastSentEmail: { type: Date, default: Date.now() },
 
     subscriptions: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
