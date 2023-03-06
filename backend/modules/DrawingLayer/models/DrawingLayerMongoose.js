@@ -30,13 +30,7 @@ const DrawingLayerSchema = mongoose.Schema(
     //    id: false,
   }
 );
-DrawingLayerSchema.pre("save", async function (next) {
-  await Disaster.updateOne(
-    { _id: this.disaster },
-    { $push: { drawingLayers: this._id } }
-  );
-  next();
-});
+
 export const DrawingLayer = mongoose.model("DrawingLayer", DrawingLayerSchema);
 // {
 // 	"record": {

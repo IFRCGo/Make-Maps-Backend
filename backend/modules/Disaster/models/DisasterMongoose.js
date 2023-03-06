@@ -36,12 +36,6 @@ const DisasterSchema = mongoose.Schema(
         ref: "Pin",
       },
     ],
-    texts: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Text",
-      },
-    ],
     drawingLayers: [
       {
         type: mongoose.Schema.Types.ObjectId,

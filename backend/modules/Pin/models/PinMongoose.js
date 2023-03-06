@@ -35,13 +35,13 @@ const PinSchema = mongoose.Schema(
   }
 );
 PinSchema.index({ pinCoordinates: "2dsphere" });
-PinSchema.pre("save", async function (next) {
-  await Disaster.updateOne(
-    { _id: this.disaster },
-    { $push: { pins: this._id } }
-  );
-  next();
-});
+// PinSchema.pre("save", async function (next) {
+//   await Disaster.updateOne(
+//     { _id: this.disaster },
+//     { $push: { pins: this._id } }
+//   );
+//   next();
+// });
 export const Pin = mongoose.model("Pin", PinSchema);
 
 /*

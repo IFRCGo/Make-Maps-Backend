@@ -68,9 +68,34 @@ export const pinMutation = {
           { ...args.record },
           { new: true }
         );
-        await Disaster.findByIdAndUpdate({ _id: pin.disaster });
+        await Disaster.findByIdAndUpdate(
+          { _id: pin.disaster },
+          { updatedAt: new Date.now() }
+        );
       }
       return { record: pin };
+    },
+  },
+
+  pinCreateOneCustom: {
+    type: PinCustomPayload,
+    args: {
+      record: "CreateOnePinInput!",
+    },
+    resolve: async (_, { record }) => {
+      const { disaster, pinText, pinCoordinates, createdBy } = record;
+      const newPin = new Pin({
+        disaster,
+        pinText,
+        pinCoordinates,
+        createdBy,
+      });
+      const addedPin = await newPin.save();
+      await Disaster.updateOne(
+        { _id: disaster },
+        { $push: { pins: addedPin._id } }
+      );
+      return { record: addedPin };
     },
   },
 };

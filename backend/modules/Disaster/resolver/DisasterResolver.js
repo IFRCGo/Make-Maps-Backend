@@ -4,6 +4,9 @@ import { Disaster } from "./../models/DisasterMongoose.js";
 import { pubsub } from "../../../server.js";
 import { GraphQLObjectType } from "graphql";
 import { withFilter } from "graphql-subscriptions";
+import { Pin } from "../../Pin/models/PinMongoose.js";
+import { PinTC } from "../../Pin/schema/PinSchema.js";
+import { DrawingLayer } from "../../DrawingLayer/models/DrawingLayerMongoose.js";
 
 const DisasterCustomPayload = new GraphQLObjectType({
   name: "DisasterCustomPayload",
@@ -85,7 +88,33 @@ export const disasterSubscription = {
       _id: "MongoID!",
     },
     type: DisasterTC,
-    resolve: async (_, args) => await Disaster.findById(args._id),
+    resolve: async (_, args) => {
+      const disaster = await Disaster.findById(args._id).populate(
+        "pins drawingLayers"
+      );
+      const updatedPins = await Pin.find({
+        _id: { $in: disaster.pins },
+        date: { $gte: disaster.lastUpdated },
+      });
+      const addedPins = await Pin.find({
+        _id: { $nin: disaster.pins },
+        createdAt: { $gte: disaster.lastUpdated },
+      });
+      const updatedDrawingLayers = await DrawingLayer.find({
+        _id: { $in: disaster.drawingLayers },
+        updatedAt: { $gte: disaster.lastUpdated },
+      });
+      const addedDrawingLayers = await DrawingLayer.find({
+        _id: { $nin: disaster.drawingLayers },
+        createdAt: { $gte: disaster.lastUpdated },
+      });
+
+      return {
+        ...disaster.toObject(),
+        pins: [...updatedPins, ...addedPins],
+        drawingLayers: [...updatedDrawingLayers, ...addedDrawingLayers],
+      };
+    },
     subscribe: () => pubsub.asyncIterator(["DISASTER_UPDATED"]),
   },
 };

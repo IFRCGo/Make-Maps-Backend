@@ -10,11 +10,6 @@ import {
   disasterSubscription,
 } from "../modules/Disaster/resolver/DisasterResolver.js";
 
-import {
-  textQuery,
-  textMutation,
-} from "../modules/Text/resolver/TextResolver.js";
-
 import { pinQuery, pinMutation } from "../modules/Pin/resolver/PinResolver.js";
 
 import {
@@ -25,7 +20,6 @@ import {
 schemaComposer.Query.addFields({
   ...disasterQuery,
   ...userQuery,
-  ...textQuery,
   ...pinQuery,
   ...drawingLayerQuery,
 });
@@ -33,7 +27,6 @@ schemaComposer.Query.addFields({
 schemaComposer.Mutation.addFields({
   ...disasterMutation,
   ...userMutation,
-  ...textMutation,
   ...pinMutation,
   ...drawingLayerMutation,
 });

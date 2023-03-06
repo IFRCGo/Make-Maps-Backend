@@ -58,6 +58,7 @@ export const drawingLayerMutation = {
           { _id: removedLayer.disaster },
           {
             $pull: { drawingLayers: removedLayer._id },
+            lastUpdated: new Date(),
           }
         );
       }
@@ -75,12 +76,37 @@ export const drawingLayerMutation = {
       if (layer) {
         layer = await DrawingLayer.findByIdAndUpdate(
           { _id: args._id },
-          { ...args.record },
+          { ...args.record, date: new Date() },
           { new: true }
         );
-        await Disaster.findByIdAndUpdate({ _id: layer.disaster });
+        await Disaster.findByIdAndUpdate(
+          { _id: layer.disaster },
+          { updatedAt: new Date.now() }
+        );
       }
       return { record: layer };
+    },
+  },
+
+  drawingLayerCreateOneCustom: {
+    type: DrawingLayerCustomPayload,
+    args: {
+      record: "CreateOneDrawingLayerInput!",
+    },
+    resolve: async (_, { record }) => {
+      const { disaster, createdBy, featureType, featureGeoJSON } = record;
+      const newLayer = new DrawingLayer({
+        disaster,
+        createdBy,
+        featureType,
+        featureGeoJSON,
+      });
+      const savedLayer = await newLayer.save();
+      await Disaster.updateOne(
+        { _id: disaster },
+        { $push: { drawingLayers: savedLayer._id } }
+      );
+      return { record: savedLayer };
     },
   },
 };
