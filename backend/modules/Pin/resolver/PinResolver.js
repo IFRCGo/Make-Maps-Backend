@@ -70,7 +70,7 @@ export const pinMutation = {
         );
         await Disaster.findByIdAndUpdate(
           { _id: pin.disaster },
-          { updatedAt: new Date.now() }
+          { updatedAt: new Date() }
         );
       }
       return { record: pin };

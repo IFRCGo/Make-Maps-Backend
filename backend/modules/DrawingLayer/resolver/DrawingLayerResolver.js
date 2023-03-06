@@ -81,7 +81,7 @@ export const drawingLayerMutation = {
         );
         await Disaster.findByIdAndUpdate(
           { _id: layer.disaster },
-          { updatedAt: new Date.now() }
+          { updatedAt: new Date() }
         );
       }
       return { record: layer };
