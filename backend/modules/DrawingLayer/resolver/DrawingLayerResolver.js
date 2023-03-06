@@ -1,3 +1,4 @@
+import { pubsub } from "../../../server.js";
 import { Disaster } from "../../Disaster/models/DisasterMongoose.js";
 import { DrawingLayer } from "../models/DrawingLayerMongoose.js";
 import { DrawingLayerTC } from "../schema/DrawingLayerSchema.js";
@@ -46,48 +47,6 @@ export const drawingLayerMutation = {
   drawingLayerRemoveById: DrawingLayerTC.mongooseResolvers.removeById(),
   drawingLayerRemoveOne: DrawingLayerTC.mongooseResolvers.removeOne(),
 
-  drawingLayerRemoveOneCustom: {
-    type: DrawingLayerCustomPayload,
-    args: {
-      _id: "MongoID!",
-    },
-    resolve: async (_, args) => {
-      const removedLayer = await DrawingLayer.findByIdAndRemove(args._id);
-      if (removedLayer) {
-        await Disaster.findByIdAndUpdate(
-          { _id: removedLayer.disaster },
-          {
-            $pull: { drawingLayers: removedLayer._id },
-            lastUpdated: new Date(),
-          }
-        );
-      }
-      return { record: removedLayer };
-    },
-  },
-  drawingLayerUpdateByIdCustom: {
-    type: DrawingLayerCustomPayload,
-    args: {
-      _id: "MongoID!",
-      record: "UpdateByIdDrawingLayerInput!",
-    },
-    resolve: async (_, args) => {
-      var layer = await DrawingLayer.findById(args._id);
-      if (layer) {
-        layer = await DrawingLayer.findByIdAndUpdate(
-          { _id: args._id },
-          { ...args.record, date: new Date() },
-          { new: true }
-        );
-        await Disaster.findByIdAndUpdate(
-          { _id: layer.disaster },
-          { updatedAt: new Date() }
-        );
-      }
-      return { record: layer };
-    },
-  },
-
   drawingLayerCreateOneCustom: {
     type: DrawingLayerCustomPayload,
     args: {
@@ -106,7 +65,62 @@ export const drawingLayerMutation = {
         { _id: disaster },
         { $push: { drawingLayers: savedLayer._id } }
       );
+      pubsub.publish("DRAWING_LAYER_ADDED", {
+        drawingLayerAdded: savedLayer,
+        disasterId: disaster,
+      });
       return { record: savedLayer };
+    },
+  },
+
+  drawingLayerUpdateByIdCustom: {
+    type: DrawingLayerCustomPayload,
+    args: {
+      _id: "MongoID!",
+      record: "UpdateByIdDrawingLayerInput!",
+    },
+    resolve: async (_, args) => {
+      var layer = await DrawingLayer.findById(args._id);
+      if (layer) {
+        layer = await DrawingLayer.findByIdAndUpdate(
+          { _id: args._id },
+          { ...args.record, date: new Date() },
+          { new: true }
+        );
+        await Disaster.findByIdAndUpdate(
+          { _id: layer.disaster },
+          { updatedAt: new Date() }
+        );
+        pubsub.publish("DRAWING_LAYER_UPDATED", {
+          drawingLayerUpdated: layer,
+          disasterId: layer.disaster,
+        });
+      }
+      return { record: layer };
+    },
+  },
+
+  drawingLayerRemoveOneCustom: {
+    type: DrawingLayerCustomPayload,
+    args: {
+      _id: "MongoID!",
+    },
+    resolve: async (_, args) => {
+      const removedLayer = await DrawingLayer.findByIdAndRemove(args._id);
+      if (removedLayer) {
+        await Disaster.findByIdAndUpdate(
+          { _id: removedLayer.disaster },
+          {
+            $pull: { drawingLayers: removedLayer._id },
+            lastUpdated: new Date(),
+          }
+        );
+        pubsub.publish("DRAWING_LAYER_REMOVED", {
+          drawingLayerRemoved: removedLayer,
+          disasterId: removedLayer.disaster,
+        });
+      }
+      return { record: removedLayer };
     },
   },
 };

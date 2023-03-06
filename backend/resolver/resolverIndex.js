@@ -17,6 +17,9 @@ import {
 } from "../modules/DrawingLayer/resolver/DrawingLayerResolver.js";
 import {
   disasterSubscription,
+  drawLayerAddedSubscription,
+  drawLayerRemovedSubscription,
+  drawLayerUpdatedSubscription,
   pinAddedSubscription,
   pinRemovedSubscription,
   pinUpdatedSubscription,
@@ -41,5 +44,8 @@ schemaComposer.Subscription.addFields({
   ...pinAddedSubscription,
   ...pinRemovedSubscription,
   ...pinUpdatedSubscription,
+  ...drawLayerAddedSubscription,
+  ...drawLayerRemovedSubscription,
+  ...drawLayerUpdatedSubscription,
 });
 export const graphqlSchema = schemaComposer.buildSchema();

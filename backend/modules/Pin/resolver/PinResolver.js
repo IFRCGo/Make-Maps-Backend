@@ -60,7 +60,6 @@ export const pinMutation = {
         pinAdded: addedPin,
         disasterId: disaster,
       });
-      console.log("PIN ADDED");
 
       return { record: addedPin };
     },
