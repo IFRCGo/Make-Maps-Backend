@@ -16,9 +16,10 @@ const cron = require("node-cron");
 // | ----------- Hour (0 - 23)
 // ------------- Minute (0 - 59)
 export const StartMapSubscription = () => {
-  cron.schedule("* */2 * * * *", () => {
+  cron.schedule("*/30 * * * * *", () => {
+    console.log("runnign");
     Disaster.find({})
-      .populate("pins texts drawingLayers subscriptions")
+      .populate("pins drawingLayers subscriptions")
       .exec((err, disasters) => {
         if (err) {
           console.log(err);
@@ -26,38 +27,52 @@ export const StartMapSubscription = () => {
           disasters.forEach((disaster) => {
             if (disaster.subscriptions.length != 0) {
               const bodyArray = [];
-              let isUpdate = false;
+              const isUpdate = false;
               disaster.pins.forEach((pin) => {
-                if (pin.date.getTime() > disaster.lastSentEmail.getTime()) {
+                if (pin.date.valueOf() > disaster.lastSentEmail.valueOf()) {
                   isUpdate = true;
-                  console.log(pin);
                   User.findById(pin.createdBy, (err, user) => {
                     if (err) {
-                      // handle the error
+                      console.log(err);
                     } else {
                       console.log(user);
                       const firstName = user.firstName;
                       bodyArray.push(`Pin Updated/Added by ${firstName}.`);
+                      // use the user name as needed
+                    }
+                  });
+                } else {
+                  console.log(pin.date.valueOf());
+                  console.log(disaster.lastSentEmail.valueOf());
+                }
+              });
+
+              disaster.drawingLayers.forEach((drawingLayer) => {
+                if (
+                  drawingLayer.date.valueOf() > disaster.lastSentEmail.valueOf()
+                ) {
+                  isUpdate = true;
+                  User.findById(drawingLayer.createdBy, (err, user) => {
+                    if (err) {
+                      console.log(err);
+                    } else {
+                      console.log(user);
+                      const firstName = user.firstName;
+                      bodyArray.push(
+                        `${drawingLayer.featureType} Updated/Added by ${firstName}.`
+                      );
 
                       // use the user name as needed
                     }
                   });
                 }
               });
-              disaster.texts.forEach((text) => {
-                if (text.date.getTime() > disaster.lastSentEmail.getTime()) {
-                  isUpdate = true;
-                }
-              });
-              disaster.drawingLayers.forEach((drawingLayer) => {
-                if (
-                  drawingLayer.date.getTime() > disaster.lastSentEmail.getTime()
-                ) {
-                  isUpdate = true;
-                }
-              });
-              if (isUpdate) {
+              console.log("1-----");
+              if (isUpdate === true) {
+                console.log("2-----");
+
                 console.log("has been updated");
+                console.log(bodyArray);
                 Disaster.findOneAndUpdate(
                   { _id: disaster._id },
                   { lastSentEmail: new Date() },

@@ -6,12 +6,12 @@ export const sendEmail = async (email, subject, email_body) => {
       host: "smtp.ethereal.email",
       port: 587,
       auth: {
-        user: "elmore.breitenberg@ethereal.email",
-        pass: "T41cVDFxn1NKQwFuxh",
+        user: "ross.hilpert55@ethereal.email",
+        pass: "pWTMdmWKr5Yc8b5ryr",
       },
     });
     await transporter.sendMail({
-      from: "elmore.breitenberg@ethereal.email",
+      from: "ross.hilpert55@ethereal.email",
       to: email,
       subject: subject,
       html: `

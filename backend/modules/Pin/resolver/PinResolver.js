@@ -3,6 +3,7 @@ import { Disaster } from "./../../Disaster/models/DisasterMongoose.js";
 import { Pin } from "../models/PinMongoose.js";
 import mongoose from "mongoose";
 import { GraphQLObjectType } from "graphql";
+import { pubsub } from "../../../server.js";
 export const pinQuery = {
   pinById: PinTC.mongooseResolvers.findById(),
   pinByIds: PinTC.mongooseResolvers.findByIds(),
@@ -37,20 +38,31 @@ export const pinMutation = {
   pinCreateMany: PinTC.mongooseResolvers.createMany(),
   pinUpdateById: PinTC.mongooseResolvers.updateById(),
   pinRemoveOne: PinTC.mongooseResolvers.removeOne(),
-  pinRemoveOneCustom: {
+  pinCreateOneCustom: {
     type: PinCustomPayload,
     args: {
-      _id: "MongoID!",
+      record: "CreateOnePinInput!",
     },
-    resolve: async (_, args) => {
-      const removedPin = await Pin.findByIdAndRemove(args._id);
-      if (removedPin) {
-        await Disaster.findByIdAndUpdate(
-          { _id: removedPin.disaster },
-          { $pull: { pins: removedPin._id } }
-        );
-      }
-      return { record: removedPin };
+    resolve: async (_, { record }) => {
+      const { disaster, pinText, pinCoordinates, createdBy } = record;
+      const newPin = new Pin({
+        disaster,
+        pinText,
+        pinCoordinates,
+        createdBy,
+      });
+      const addedPin = await newPin.save();
+      await Disaster.updateOne(
+        { _id: disaster },
+        { $push: { pins: addedPin._id } }
+      );
+      pubsub.publish("PIN_ADDED", {
+        pinAdded: addedPin,
+        disasterId: disaster,
+      });
+      console.log("PIN ADDED");
+
+      return { record: addedPin };
     },
   },
 
@@ -72,30 +84,33 @@ export const pinMutation = {
           { _id: pin.disaster },
           { updatedAt: new Date() }
         );
+        pubsub.publish("PIN_UPDATED", {
+          pinUpdated: pin,
+          disasterId: pin.disaster,
+        });
       }
       return { record: pin };
     },
   },
-
-  pinCreateOneCustom: {
+  pinRemoveOneCustom: {
     type: PinCustomPayload,
     args: {
-      record: "CreateOnePinInput!",
+      _id: "MongoID!",
     },
-    resolve: async (_, { record }) => {
-      const { disaster, pinText, pinCoordinates, createdBy } = record;
-      const newPin = new Pin({
-        disaster,
-        pinText,
-        pinCoordinates,
-        createdBy,
-      });
-      const addedPin = await newPin.save();
-      await Disaster.updateOne(
-        { _id: disaster },
-        { $push: { pins: addedPin._id } }
-      );
-      return { record: addedPin };
+    resolve: async (_, args) => {
+      const removedPin = await Pin.findByIdAndRemove(args._id);
+      if (removedPin) {
+        await Disaster.findByIdAndUpdate(
+          { _id: removedPin.disaster },
+          { $pull: { pins: removedPin._id } }
+        );
+        pubsub.publish("PIN_REMOVED", {
+          pinRemoved: removedPin,
+          disasterId: removedPin.disaster,
+        });
+      }
+
+      return { record: removedPin };
     },
   },
 };

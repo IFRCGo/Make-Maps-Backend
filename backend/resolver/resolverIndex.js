@@ -7,7 +7,6 @@ import {
 import {
   disasterQuery,
   disasterMutation,
-  disasterSubscription,
 } from "../modules/Disaster/resolver/DisasterResolver.js";
 
 import { pinQuery, pinMutation } from "../modules/Pin/resolver/PinResolver.js";
@@ -16,6 +15,12 @@ import {
   drawingLayerQuery,
   drawingLayerMutation,
 } from "../modules/DrawingLayer/resolver/DrawingLayerResolver.js";
+import {
+  disasterSubscription,
+  pinAddedSubscription,
+  pinRemovedSubscription,
+  pinUpdatedSubscription,
+} from "./../modules/Disaster/Subscriptions/Subscriptions.js";
 
 schemaComposer.Query.addFields({
   ...disasterQuery,
@@ -33,5 +38,8 @@ schemaComposer.Mutation.addFields({
 
 schemaComposer.Subscription.addFields({
   ...disasterSubscription,
+  ...pinAddedSubscription,
+  ...pinRemovedSubscription,
+  ...pinUpdatedSubscription,
 });
 export const graphqlSchema = schemaComposer.buildSchema();
