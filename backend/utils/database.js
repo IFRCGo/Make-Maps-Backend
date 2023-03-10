@@ -1,8 +1,5 @@
-//Importing So Require Works in Node 14+
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
+import { mongoose } from 'mongoose'
 
-const mongoose = require("mongoose");
 mongoose.set("strictQuery", false);
 
 export async function connectDB() {

@@ -1,9 +1,5 @@
-//Importing So Require Works in Node 14+
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
-
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
+import mongoose from 'mongoose'
+// const bcrypt = require("bcryptjs");
 
 export const UserSchema = new mongoose.Schema(
   {
@@ -11,15 +7,15 @@ export const UserSchema = new mongoose.Schema(
     lastName: String,
     email: {
       type: String,
-      required: [true, "Please enter an email"],
+      // required: [true, "Please enter an email"],
       lowercase: true,
       unique: true,
     },
-    password: {
-      type: String,
-      required: true,
-      minlength: 6,
-    },
+    // password: {
+    //   type: String,
+    //   required: true,
+    //   minlength: 6,
+    // },
 
     role: {
       type: String,
@@ -34,25 +30,25 @@ export const UserSchema = new mongoose.Schema(
   }
 );
 
-//before saving the user schema add
-UserSchema.pre("save", function (next) {
-  if (!this.isModified("password")) {
-    return next();
-  }
-
-  this.hashPassword(this.password).then((password) => {
-    this.password = password;
-    next();
-  });
-});
-
-UserSchema.methods.hashPassword = async function (password) {
-  return await bcrypt.hash(password, 12);
-};
-
-UserSchema.methods.matchPassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password);
-};
+// //before saving the user schema add
+// UserSchema.pre("save", function (next) {
+//   if (!this.isModified("password")) {
+//     return next();
+//   }
+//
+//   this.hashPassword(this.password).then((password) => {
+//     this.password = password;
+//     next();
+//   });
+// });
+//
+// UserSchema.methods.hashPassword = async function (password) {
+//   return await bcrypt.hash(password, 12);
+// };
+//
+// UserSchema.methods.matchPassword = async function (enteredPassword) {
+//   return await bcrypt.compare(enteredPassword, this.password);
+// };
 
 export const User = mongoose.model("User", UserSchema);
 
