@@ -1,9 +1,5 @@
-//Importing So Require Works in Node 14+
-const require = createRequire(import.meta.url);
-
-import { createRequire } from "module";
 import { Disaster } from "./../../Disaster/models/DisasterMongoose.js";
-const mongoose = require("mongoose");
+import mongoose from 'mongoose'
 
 const TextSchema = mongoose.Schema(
   {

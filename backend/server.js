@@ -1,11 +1,7 @@
 import express from "express";
 
-//Importing So Require Works in Node 14+
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
-var cron = require("node-cron");
-//Env Variables Usage
-const dotenv = require("dotenv");
+import cron from 'node-cron'
+import dotenv from "dotenv";
 dotenv.config();
 
 import { PubSub } from "graphql-subscriptions";
@@ -22,8 +18,7 @@ import http from "http";
 import { connectDB } from "./utils/database.js";
 import { StartMapSubscription } from "./modules/EmailUpdates/EmailUpdates.js";
 //cors
-var cors = require("cors");
-
+import cors from 'cors'
 //Passport
 import passport from 'passport'
 import {OIDCStrategy} from "passport-azure-ad";
@@ -51,7 +46,7 @@ app.use(session({
 }))
 app.use(
   cors({
-    origin: "*",
+    origin: "*", //change this to specific website
     credentials: true,
   })
 );
@@ -141,7 +136,7 @@ async function startApolloServer(typeDefs, resolvers) {
     return next();
   }
 
-  app.get('/api/tasks',  passport.authenticate(
+  app.post('/auth/signin',  passport.authenticate(
       'oauth-bearer',
       { session: false},
       (err, user) =>{

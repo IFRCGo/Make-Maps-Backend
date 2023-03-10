@@ -1,11 +1,9 @@
-//sending emails to subscribers
-const require = createRequire(import.meta.url);
+import cron from 'node-cron'
 import { sendEmail } from "./../../utils/sendEmail.js";
 import { Disaster } from "../Disaster/models/DisasterMongoose.js";
-import { createRequire } from "module";
 import { Pin } from "../Pin/models/PinMongoose.js";
 import { User } from "../User/models/UserMongoose.js";
-const cron = require("node-cron");
+// const cron = require("node-cron");
 
 // * * * * *
 // - - - - -

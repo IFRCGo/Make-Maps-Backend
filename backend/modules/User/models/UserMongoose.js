@@ -1,9 +1,5 @@
-//Importing So Require Works in Node 14+
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
-
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
+import mongoose from 'mongoose'
+// const bcrypt = require("bcryptjs");
 
 export const UserSchema = new mongoose.Schema(
   {
