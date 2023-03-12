@@ -19,7 +19,9 @@
   },
   "homepage": "https://github.com/IFRC-GO-Make-Maps/IFRC-GO-Make-Maps-Backend#readme",
   "dependencies": {
+    "@apollo/server": "^4.5.0",
     "@graphql-tools/schema": "^9.0.14",
+    "@jest/globals": "^29.5.0",
     "apollo-server-core": "^3.11.1",
     "apollo-server-express": "^3.11.1",
     "bcryptjs": "^2.4.3",
@@ -41,6 +43,7 @@
     "nodemon": "^2.0.20",
     "passport": "^0.6.0",
     "passport-azure-ad": "^4.3.4",
+    "supertest": "^6.3.3",
     "tar": "^6.1.11",
     "ws": "^8.12.0"
   },
