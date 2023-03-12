@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for Pin/models/PinMongoose.js</title>
+    <title>Code coverage report for backend/resolver/resolverIndex.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">Pin/models</a> PinMongoose.js</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">backend/resolver</a> resolverIndex.js</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
@@ -114,26 +114,7 @@
 <a name='L49'></a><a href='#L49'>49</a>
 <a name='L50'></a><a href='#L50'>50</a>
 <a name='L51'></a><a href='#L51'>51</a>
-<a name='L52'></a><a href='#L52'>52</a>
-<a name='L53'></a><a href='#L53'>53</a>
-<a name='L54'></a><a href='#L54'>54</a>
-<a name='L55'></a><a href='#L55'>55</a>
-<a name='L56'></a><a href='#L56'>56</a>
-<a name='L57'></a><a href='#L57'>57</a>
-<a name='L58'></a><a href='#L58'>58</a>
-<a name='L59'></a><a href='#L59'>59</a>
-<a name='L60'></a><a href='#L60'>60</a>
-<a name='L61'></a><a href='#L61'>61</a>
-<a name='L62'></a><a href='#L62'>62</a>
-<a name='L63'></a><a href='#L63'>63</a>
-<a name='L64'></a><a href='#L64'>64</a>
-<a name='L65'></a><a href='#L65'>65</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L52'></a><a href='#L52'>52</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -167,6 +148,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -177,84 +164,58 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import mongoose from 'mongoose'
-import { Disaster } from "./../../Disaster/models/DisasterMongoose.js";
-const PinSchema = mongoose.Schema(
-  {
-    disaster: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Disaster",
-      required: true,
-    },
-    pinText: { type: String },
-    pinCoordinates: {
-      type: {
-        type: String,
-        enum: ["Point"],
-        required: true,
-      },
-      coordinates: {
-        type: [Number],
-        required: true,
-      },
-    },
-    createdBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-  },
-  {
-    timestamps: true,
-    collection: "Pin",
-    autoCreate: true,
-  }
-);
-PinSchema.index({ pinCoordinates: "2dsphere" });
-// PinSchema.pre("save", async function (next) {
-//   await Disaster.updateOne(
-//     { _id: this.disaster },
-//     { $push: { pins: this._id } }
-//   );
-//   next();
-// });
-export const Pin = mongoose.model("Pin", PinSchema);
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { schemaComposer } from "graphql-compose";
 &nbsp;
-/*
+import {
+  userMutation,
+  userQuery,
+} from "../modules/User/resolver/UserResolver.js";
+import {
+  disasterQuery,
+  disasterMutation,
+} from "../modules/Disaster/resolver/DisasterResolver.js";
 &nbsp;
-{
-   "records":[
-      {
-         "disaster":"63d10b119e34b211f344328f",
-         "pinText":"pin text",
-         "pinCoordinates":{
-            "type":"Point",
-            "coordinates":[
-              18.46633000,
-               -66.10572000,
-               
-            ]
-         },
-         "createdBy": "63d10ad4e30540f8a78a1840",
-      },
-   
-   ]
-}
-*/
+import { pinQuery, pinMutation } from "../modules/Pin/resolver/PinResolver.js";
+&nbsp;
+import {
+  drawingLayerQuery,
+  drawingLayerMutation,
+} from "../modules/DrawingLayer/resolver/DrawingLayerResolver.js";
+import {
+  disasterSubscription,
+  drawLayerAddedSubscription,
+  drawLayerRemovedSubscription,
+  drawLayerUpdatedSubscription,
+  pinAddedSubscription,
+  pinRemovedSubscription,
+  pinUpdatedSubscription,
+} from "./../modules/Disaster/Subscriptions/Subscriptions.js";
+&nbsp;
+schemaComposer.Query.addFields({
+  ...disasterQuery,
+  ...userQuery,
+  ...pinQuery,
+  ...drawingLayerQuery,
+});
+&nbsp;
+schemaComposer.Mutation.addFields({
+  ...disasterMutation,
+  ...userMutation,
+  ...pinMutation,
+  ...drawingLayerMutation,
+});
+&nbsp;
+schemaComposer.Subscription.addFields({
+  ...disasterSubscription,
+  ...pinAddedSubscription,
+  ...pinRemovedSubscription,
+  ...pinUpdatedSubscription,
+  ...drawLayerAddedSubscription,
+  ...drawLayerRemovedSubscription,
+  ...drawLayerUpdatedSubscription,
+});
+export const graphqlSchema = schemaComposer.buildSchema();
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -262,7 +223,7 @@ export const Pin = mongoose.model("Pin", PinSchema);
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-03-12T01:59:22.034Z
+                at 2023-03-12T03:16:29.868Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
