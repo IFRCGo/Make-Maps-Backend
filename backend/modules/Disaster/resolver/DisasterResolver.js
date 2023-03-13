@@ -45,8 +45,7 @@ export const disasterQuery = {
       const allDisasters = await Disaster.findById(args._id)
         .populate("pins")
         .exec();
-      console.log(allDisasters);
-      return allDisasters;
+      return {record: allDisasters};
     },
   },
 };
