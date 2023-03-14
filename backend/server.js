@@ -21,9 +21,6 @@ import { StartMapSubscription } from "./modules/EmailUpdates/EmailUpdates.js";
 import cors from 'cors'
 
 
-//Database connection
-connectDB();
-
 //Express
 const app = express();
 
@@ -41,6 +38,9 @@ app.get("/", (req, res) => {
 const PORT = process.env.PORT || 9092;
 
 async function startApolloServer(typeDefs, resolvers) {
+
+  //Database connection
+  await connectDB();
   const httpServer = http.createServer(app);
 
   // Creating the WebSocket server
