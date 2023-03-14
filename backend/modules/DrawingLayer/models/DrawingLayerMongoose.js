@@ -18,6 +18,7 @@ const DrawingLayerSchema = mongoose.Schema(
       enum: ["Polygon", "MultiLineString", "LineString"],
       required: true,
     },
+      //TODO Verify featureGeoJSON is legitimate GeoJSON type
     featureGeoJSON: { type: Object, required: true },
   },
   {
