@@ -33,6 +33,7 @@
     "graphql": "^16.6.0",
     "graphql-compose": "^9.0.10",
     "graphql-compose-mongoose": "^9.7.2",
+    "graphql-request": "^5.2.0",
     "graphql-subscriptions": "^2.0.0",
     "graphql-ws": "^5.11.2",
     "mockingoose": "^2.16.2",
