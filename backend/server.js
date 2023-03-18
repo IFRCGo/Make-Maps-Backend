@@ -37,7 +37,7 @@ app.get("/", (req, res) => {
 });
 const PORT = process.env.PORT || 9092;
 
-async function startApolloServer(typeDefs, resolvers) {
+export async function startApolloServer(typeDefs, resolvers) {
 
   //Database connection
   await connectDB();
