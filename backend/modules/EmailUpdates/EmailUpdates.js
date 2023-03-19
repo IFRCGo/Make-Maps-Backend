@@ -3,7 +3,6 @@ import { sendEmail } from "./../../utils/sendEmail.js";
 import { Disaster } from "../Disaster/models/DisasterMongoose.js";
 import { Pin } from "../Pin/models/PinMongoose.js";
 import { User } from "../User/models/UserMongoose.js";
-// const cron = require("node-cron");
 
 // * * * * *
 // - - - - -
@@ -13,6 +12,12 @@ import { User } from "../User/models/UserMongoose.js";
 // | | --------- Day of month (1 - 31)
 // | ----------- Hour (0 - 23)
 // ------------- Minute (0 - 59)
+/**
+ Starts a cron job that runs every 30 seconds to check for updates on disasters, pins and drawing layers.
+ If any updates are found, sends an email to all subscribers and updates the last sent email time for the disaster.
+ @returns {void}
+ TODO: I dont think this is the best way to do this. Better to trigger this on events rather than running it every 30 seconds.
+ */
 export const StartMapSubscription = () => {
   cron.schedule("*/30 * * * * *", () => {
     console.log("runnign");
@@ -101,6 +106,12 @@ export const StartMapSubscription = () => {
   });
 };
 
+/**
+
+ Returns an HTML formatted string that contains the body of an email.
+ @param {string[]} arr - An array of strings that make up the body of an email.
+ @returns {string} - An HTML formatted string that contains the body of an email.
+ */
 const emailBody = (arr) => {
   let body = "";
   arr.map((p) => {

@@ -4,6 +4,26 @@ import { DrawingLayer } from "../models/DrawingLayerMongoose.js";
 import { DrawingLayerTC } from "../schema/DrawingLayerSchema.js";
 import { GraphQLObjectType } from "graphql";
 
+
+/**
+ * GraphQL query for retrieving and manipulating DrawingLayer data.
+ * @typedef {Object} DrawingLayerQuery
+ * @property {Function} drawingLayerById - graphql-compose-mongoose resolver for retrieving a drawing layer by ID.
+ * @property {Function} drawingLayerByIds - graphql-compose-mongoose resolver for retrieving drawing layers by IDs.
+ * @property {Function} drawingLayerOne - graphql-compose-mongoose resolver for retrieving a single drawing layer.
+ * @property {Function} drawingLayerMany - graphql-compose-mongoose resolver for retrieving multiple drawing layers.
+ * @property {Function} drawingLayerDataLoader - graphql-compose-mongoose resolver for loading drawing layers data.
+ * @property {Function} drawingLayerDataLoaderMany - graphql-compose-mongoose resolver for loading multiple drawing layers data.
+ * @property {Function} drawingLayerByIdLean - graphql-compose-mongoose resolver for retrieving a drawing layer by ID using lean query.
+ * @property {Function} drawingLayerByIdsLean - graphql-compose-mongoose resolver for retrieving drawing layers by IDs using lean query.
+ * @property {Function} drawingLayerOneLean - graphql-compose-mongoose resolver for retrieving single drawing layer using lean query.
+ * @property {Function} drawingLayerManyLean - graphql-compose-mongoose resolver for retrieving multiple drawing layers using lean query.
+ * @property {Function} drawingLayerDataLoaderLean - graphql-compose-mongoose resolver for loading drawing layers data using lean query.
+ * @property {Function} drawingLayerDataLoaderManyLean - graphql-compose-mongoose resolver for loading multiple drawing layers data using lean query.
+ * @property {Function} drawingLayerCount - graphql-compose-mongoose resolver for counting drawing layers.
+ * @property {Function} drawingLayerConnection - graphql-compose-mongoose resolver for paginated connection of drawing layers.
+ * @property {Function} drawingLayerPagination - graphql-compose-mongoose resolver for paginating drawing layers.
+ */
 export const drawingLayerQuery = {
   drawingLayerById: DrawingLayerTC.mongooseResolvers.findById(),
   drawingLayerByIds: DrawingLayerTC.mongooseResolvers.findByIds(),
@@ -33,6 +53,11 @@ export const drawingLayerQuery = {
   drawingLayerPagination: DrawingLayerTC.mongooseResolvers.pagination(),
 };
 
+/**
+ * Custom payload type for DrawingLayer mutations
+ * @typedef {Object} DrawingLayerCustomPayload
+ * @property {Object} record.type - The DrawingLayerTC schema type
+ */
 const DrawingLayerCustomPayload = new GraphQLObjectType({
   name: "DrawingLayerRemoveOneCustomPayload",
   fields: {
@@ -40,6 +65,19 @@ const DrawingLayerCustomPayload = new GraphQLObjectType({
   },
 });
 
+
+/**
+ * GraphQL mutations for creating, updating, and removing drawing layers.
+ * @typedef {Object} DrawingLayerMutation
+ * @property {Function} drawingLayerCreateOne - graphql-compose-mongoose resolver for creating a single drawing layer.
+ * @property {Function} drawingLayerCreateMany - graphql-compose-mongoose resolver for creating multiple drawing layers.
+ * @property {Function} drawingLayerUpdateById - graphql-compose-mongoose resolver for updating a drawing layer by ID.
+ * @property {Function} drawingLayerRemoveById - graphql-compose-mongoose resolver for removing drawing layer by ID.
+ * @property {Function} drawingLayerRemoveOne - graphql-compose-mongoose resolver for removing single drawing layer.
+ * @property {Function} drawingLayerCreateOneCustom - Custom resolver for creating single drawing layer and publishing an event for subscribers.
+ * @property {Function} drawingLayerUpdateByIdCustom - Custom resolver for updating drawing layer by ID and publishing an event for subscribers.
+ * @property {Function} drawingLayerRemoveOneCustom - Custom resolver for removing single drawing layer and publishing an event for subscribers.
+ */
 export const drawingLayerMutation = {
   drawingLayerCreateOne: DrawingLayerTC.mongooseResolvers.createOne(),
   drawingLayerCreateMany: DrawingLayerTC.mongooseResolvers.createMany(),

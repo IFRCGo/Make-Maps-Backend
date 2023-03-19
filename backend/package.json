@@ -8,7 +8,9 @@
     "start": "nodemon server.js",
     "test": "jest",
     "docs:types": "jsdoc2md modules/*/models/*.js > ./documentation/Types.md",
-    "docs:resolvers": "jsdoc2md modules/*/resolver/*.js > ./documentation/Resolvers.md"
+    "docs:resolvers": "jsdoc2md modules/*/resolver/*.js > ./documentation/Resolvers.md",
+    "docs:server": "jsdoc2md server.js > ./documentation/Server.md",
+    "docs:emailUpdates": "jsdoc2md modules/EmailUpdates/*.js > ./documentation/EmailUpdates.md"
   },
   "repository": {
     "type": "git",

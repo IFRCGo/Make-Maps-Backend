@@ -41,11 +41,9 @@ const PORT = process.env.PORT || 9092;
  * Starts the Apollo server and connects to the database.
  *
  * @async
- * @param {Object} typeDefs - The GraphQL type definitions.
- * @param {Object} resolvers - The GraphQL resolvers.
  * @returns {Promise} A promise that resolves to the Apollo server instance.
  */
-export async function startApolloServer(typeDefs, resolvers) {
+export async function startApolloServer() {
 
   //Database connection
   await connectDB();
