@@ -33,11 +33,17 @@ app.use(
   })
 );
 app.get("/", (req, res) => {
-  res.send("IFRC GO Make Maps Backend Running!");
+  res.status(200).send("IFRC GO Make Maps Backend Running!");
 });
 const PORT = process.env.PORT || 9092;
 
-export async function startApolloServer(typeDefs, resolvers) {
+/**
+ * Starts the Apollo server and connects to the database.
+ *
+ * @async
+ * @returns {Promise} A promise that resolves to the Apollo server instance.
+ */
+export async function startApolloServer() {
 
   //Database connection
   await connectDB();
@@ -89,9 +95,10 @@ export async function startApolloServer(typeDefs, resolvers) {
   console.log(
     `🚀 Graph Server ready at http://localhost:${PORT}${server.graphqlPath}`
   );
-
-  // StartMapSubscription();
+  return server;
 }
+
+// Start the server if not in test mode.
 if (process.env.NODE_ENV !== 'test') {
   startApolloServer();
 }
