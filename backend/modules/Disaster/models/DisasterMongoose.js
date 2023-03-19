@@ -1,5 +1,30 @@
 import mongoose from 'mongoose'
 
+/**
+
+ Defines a Mongoose schema for disasters.
+ @typedef {Object} DisasterSchema
+ @property {string} _id - Unique ID of the disaster
+ @property {String} disasterName - The name of the disaster.
+ @property {String} disasterType - The type of disaster.
+ @property {Date} date - The date of the disaster.
+ @property {String} region - The region where the disaster occurred.
+ @property {String} [location] - The specific location of the disaster. e.g. Pakistan, UK
+ @property {Object} disasterCoordinates - The coordinates of the disaster and type of coordinate.
+ @property {String} disasterCoordinates.type - The type of coordinates, which should be "Point".
+ @property {Number[]} disasterCoordinates.coordinates - An array of latitude and longitude coordinates.
+ @property {String} [disasterInformation] - Additional information about the disaster.
+ @property {String} amount_requested - The amount of funding requested for the disaster.
+ @property {String} amount_funded - The amount of funding received for the disaster.
+ @property {mongoose.Schema.Types.ObjectId} createdBy - The user who created the disaster.
+ @property {mongoose.Schema.Types.ObjectId[]} pins - An array of Pin object IDs associated with the disaster.
+ @property {mongoose.Schema.Types.ObjectId[]} drawingLayers - An array of DrawingLayer object IDs associated with the disaster.
+ @property {Date} [lastSentEmail=Date.now()] - The date when the last email about the disaster was sent.
+ @property {mongoose.Schema.Types.ObjectId[]} subscriptions - An array of User object IDs subscribed to the disaster.
+ @property {Boolean} [autoCreate=true] - Whether to automatically create the collection in the database if it does not exist.
+ @property {Boolean} [timestamps=true] - Whether to automatically add createdAt and updatedAt fields to the schema.
+ @property {String} [collection='Disaster'] - The name of the collection in the database.
+ */
 const DisasterSchema = mongoose.Schema(
   {
     disasterName: { type: "String", required: true },

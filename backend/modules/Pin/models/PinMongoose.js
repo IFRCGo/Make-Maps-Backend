@@ -1,5 +1,16 @@
 import mongoose from 'mongoose'
 import { Disaster } from "./../../Disaster/models/DisasterMongoose.js";
+
+/**
+
+ Mongoose schema for Pins.
+ @typedef {object} PinSchema
+ @property {string} pinText - The text associated with the pin.
+ @property {Object} pinCoordinates - The coordinates of the pin.
+ @property {string} pinCoordinates.type - The type of the coordinates.
+ @property {Array} pinCoordinates.coordinates - The coordinates.
+ @property {mongoose.Schema.Types.ObjectId} createdBy - The user who created the pin.
+ */
 const PinSchema = mongoose.Schema(
   {
     disaster: {

@@ -1,6 +1,15 @@
 import mongoose from 'mongoose'
 // const bcrypt = require("bcryptjs");
 
+/**
+
+ Mongoose schema for user data.
+ @typedef {Object} UserSchema
+ @property {string} firstName - The first name of the user.
+ @property {string} lastName - The last name of the user.
+ @property {string} email - The email of the user.
+ @property {string} role - The role of the user (Admin or User).
+ */
 export const UserSchema = new mongoose.Schema(
   {
     firstName: String,
@@ -11,12 +20,6 @@ export const UserSchema = new mongoose.Schema(
       lowercase: true,
       unique: true,
     },
-    // password: {
-    //   type: String,
-    //   required: true,
-    //   minlength: 6,
-    // },
-
     role: {
       type: String,
       enum: ["Admin", "User"],
@@ -25,7 +28,7 @@ export const UserSchema = new mongoose.Schema(
   },
   {
     autoCreate: true,
-    timestaps: true,
+    timestamps: true,
     collection: "User",
   }
 );

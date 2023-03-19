@@ -1,7 +1,17 @@
 import { Disaster } from "./../../Disaster/models/DisasterMongoose.js";
 import mongoose from 'mongoose'
 
-
+/**
+ Defines a Mongoose schema for Drawing Layers.
+ @typedef {Object} DrawingLayer
+ @property {mongoose.Schema.Types.ObjectId} _id - Unique ID of the drawing layer
+ @property {mongoose.Schema.Types.ObjectId} disaster - ID of the disaster the drawing layer belongs to
+ @property {mongoose.Schema.Types.ObjectId} createdBy - ID of the user who created the drawing layer
+ @property {string} featureType - The type of the drawing feature (Polygon, MultiLineString, LineString)
+ @property {Object} featureGeoJSON - The GeoJSON object representing the drawing feature
+ @property {Date} createdAt - The date and time the drawing layer was created
+ @property {Date} updatedAt - The date and time the drawing layer was last updated
+ */
 const DrawingLayerSchema = mongoose.Schema(
   {
     disaster: {
