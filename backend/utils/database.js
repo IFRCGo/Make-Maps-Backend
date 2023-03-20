@@ -12,7 +12,6 @@ export async function connectDB() {
 
     console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
-    console.log(`Error: ${error.message}`);
-    process.exit();
+    throw new Error(`Unable to connect to database: ${error.message}`);
   }
 }
