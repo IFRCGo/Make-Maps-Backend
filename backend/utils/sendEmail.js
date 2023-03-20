@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
 
+//TODO I dont think we should be exposing a password here
 export const sendEmail = async (email, subject, email_body) => {
   try {
     const transporter = nodemailer.createTransport({
@@ -86,10 +87,7 @@ export const sendEmail = async (email, subject, email_body) => {
 </html>
   `,
     });
-    console.log("Email Sent successfully!");
   } catch (err) {
-    console.log("Email Not Sent");
-
-    console.log(err);
+    throw new Error(`Email Not Sent: ${err.message}`);
   }
 };

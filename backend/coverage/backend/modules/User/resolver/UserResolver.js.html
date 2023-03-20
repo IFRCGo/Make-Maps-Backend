@@ -92,9 +92,71 @@
 <a name='L27'></a><a href='#L27'>27</a>
 <a name='L28'></a><a href='#L28'>28</a>
 <a name='L29'></a><a href='#L29'>29</a>
-<a name='L30'></a><a href='#L30'>30</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a>
+<a name='L36'></a><a href='#L36'>36</a>
+<a name='L37'></a><a href='#L37'>37</a>
+<a name='L38'></a><a href='#L38'>38</a>
+<a name='L39'></a><a href='#L39'>39</a>
+<a name='L40'></a><a href='#L40'>40</a>
+<a name='L41'></a><a href='#L41'>41</a>
+<a name='L42'></a><a href='#L42'>42</a>
+<a name='L43'></a><a href='#L43'>43</a>
+<a name='L44'></a><a href='#L44'>44</a>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -123,6 +185,25 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { UserTC } from '../schema/UserSchema.js'
 &nbsp;
+/**
+ * GraphQL query for retrieving and manipulating User data
+ * @type {Object}
+ * @property {Function} userById -  graphql-compose-mongoose resolver for retrieving a User by its ID
+ * @property {Function} userByIds -  graphql-compose-mongoose resolver for retrieving multiple User their IDs
+ * @property {Function} userOne -  graphql-compose-mongoose resolver for retrieving a single Users.
+ * @property {Function} userMany -  graphql-compose-mongoose resolver for retrieving multiple Users
+ * @property {Function} userDataLoader -  graphql-compose-mongoose resolver for retrieving a User using DataLoader
+ * @property {Function} userDataLoaderMany -  graphql-compose-mongoose resolver for retrieving multiple Users using DataLoader
+ * @property {Function} userByIdLean -  graphql-compose-mongoose resolver for retrieving a User by its ID using the lean option
+ * @property {Function} userByIdsLean -  graphql-compose-mongoose resolver for retrieving multiple User by their IDs using the lean option for better performance
+ * @property {Function} userOneLean -  graphql-compose-mongoose resolver for retrieving a single User using the lean option
+ * @property {Function} userManyLean -  graphql-compose-mongoose resolver for retrieving multiple Users using the lean option
+ * @property {Function} userDataLoaderLean -  graphql-compose-mongoose resolver for retrieving a User using DataLoader and the lean option for better performance
+ * @property {Function} userDataLoaderManyLean -  graphql-compose-mongoose resolver for retrieving multiple Users using DataLoader and the lean option for better performance
+ * @property {Function} userCount -  graphql-compose-mongoose resolver for retrieving the total number of Users that match the provided filter
+ * @property {Function} userConnection -  graphql-compose-mongoose resolver a connection of Users for pagination purposes
+ * @property {Function} userPagination -  graphql-compose-mongoose resolver for retrieving User documents paginated
+ */
 export const userQuery = {
     userById: UserTC.mongooseResolvers.findById(),
     userByIds: UserTC.mongooseResolvers.findByIds(),
@@ -141,6 +222,18 @@ export const userQuery = {
     userPagination: UserTC.mongooseResolvers.pagination(),
 };
 &nbsp;
+/**
+ * GraphQL mutations for creating, updating, and removing User data.
+ * @type {Object}
+ * @property {Function} userCreateOne - graphql-compose-mongoose resolver for creating a new User
+ * @property {Function} userCreateMany - graphql-compose-mongoose resolver for creating multiple new User
+ * @property {Function} userUpdateById - graphql-compose-mongoose resolver for updating a User document by their ID
+ * @property {Function} userUpdateOne - graphql-compose-mongoose resolver for updating a single User that matches the provided filter
+ * @property {Function} userUpdateMany - graphql-compose-mongoose resolver for updating multiple User that match the provided filter
+ * @property {Function} userRemoveById - graphql-compose-mongoose resolver for removing a User by their ID
+ * @property {Function} userRemoveOne - graphql-compose-mongoose resolver for removing a single User that matches the provided filter
+ * @property {Function} userRemoveMany - graphql-compose-mongoose resolver for removing multiple User documents that match the provided filter
+ */
 export const userMutation ={
     userCreateOne: UserTC.mongooseResolvers.createOne(),
     userCreateMany: UserTC.mongooseResolvers.createMany(),
@@ -157,7 +250,7 @@ export const userMutation ={
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-03-19T17:06:17.098Z
+                at 2023-03-20T01:58:59.965Z
             </div>
         <script src="../../../../prettify.js"></script>
         <script>
